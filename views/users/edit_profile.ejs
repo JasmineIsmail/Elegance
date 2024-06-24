@@ -1,0 +1,150 @@
+<%- include('../partials/userPartials/header.ejs') %>
+<nav id="sidebar" class="sidebar-profile col-md-2">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+          <span><strong>Hello, <%= user.name %></strong>
+          </span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/user_profile">
+          <span><strong>Profile</strong> </span>
+        </a>
+      </li><!-- End users Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/manage_address">
+          <span><strong>Manage Address</strong> </span>
+        </a>
+      </li><!-- End products Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/orders">
+          <span><strong>Orders</strong></span>
+        </a>
+      </li><!-- End Category Page Nav -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/wallet">
+          <span><strong>Wallet</strong></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/change_password">
+          <span><strong>Change Password</strong></span>
+        </a>
+      </li><!-- End Register Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/logout">
+          <span><strong>Logout</strong></span>
+        </a>
+      </li><!-- End Login Page Nav -->
+    </ul>
+
+</nav><!-- End Sidebar-->
+<main class="col-md-10 main-content">
+    <div class="section-profile">
+        
+        <div class="profile-data">
+            <h5 class="card-title profile-title">Profile Details</h5>
+            <form action="/users/update_profile?id=<%=user._id %>" method="post" onsubmit="return validateForm()">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 " >
+                        <label for="name"><strong>Name</strong></label></div>
+                    <div class="col-lg-6 col-md-6">
+                    <input type="text" name="name" id="Name" class="form-control" placeholder="<%=user.name%>">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class= "col-lg-3 col-md-4">
+                        <label for="email"><strong>e-mail</strong> </label></div>
+                    <div class="col-lg-6 col-md-6">
+                    <input type="email" name="email" id="Email" class="form-control" placeholder="<%= user.email %>"></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 ">
+                        <label for="mobile"><strong>Mobile</strong></label></div>
+                    <div class="col-lg-6 col-md-6">
+                    <input type="number" name="mobile" id="Mobile" class="form-control" placeholder="<%= user.mobile%>"></div> 
+                </div>
+                <button type="submit" class="btn btn-secondary">Apply Changes</button>
+            </div>
+            </form>
+       
+    </div>
+    </div>
+</main>
+
+<script>
+    function validateForm() {
+        var name = document.getElementsByName("name")[0];
+        var email = document.getElementsByName("email")[0];
+        var Mobile = document.getElementsByName("mobile")[0];
+        
+        var isValid = true;
+  
+        if (name.value.trim() === "") {
+            highlightField(name);
+            name.placeholder = "Field is empty";
+            isValid = false;
+        }else if (name.value.length < 4) {
+            highlightField(name);
+            alert("Name should be at least 4 characters long.");
+            isValid = false;
+        }  else {
+            removeHighlight(name);
+            name.placeholder = "";
+        }
+        if (email.value.trim() === "") {
+            highlightField(email);
+            email.placeholder = "Field is empty";
+            isValid = false;
+        } else if (!isValidEmail(email.value)) {
+            highlightField(email);
+            alert("Please enter a valid email address.");
+            isValid = false;
+        } else {
+            removeHighlight(email);
+            email.placeholder = "";
+        }
+        if(Mobile.value.trim()=== ""){
+          highlightField(Mobile);
+          Mobile.placeholder = "Field is empty";
+          isValid = false;
+        }else if(Mobile.value.length !== 10){
+          highlightField(Mobile);
+          alert("Mobile number should have 10 digits");
+        }else{
+          removeHighlight(Mobile);
+          Mobile.placeholder = "";
+        }
+       return isValid;
+    }
+  
+    function highlightField(field) {
+        field.style.borderColor = "red";
+        field.focus();
+    }
+  
+    function removeHighlight(field) {
+        field.style.borderColor = "";
+    }
+  
+    function isValidEmail(email) {
+        // Basic email format validation
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+  </script>
+
+
+
+<%- include('../partials/userPartials/footer2.ejs') %>
+

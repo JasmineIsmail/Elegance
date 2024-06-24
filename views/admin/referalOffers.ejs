@@ -1,0 +1,83 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Refferal Offers</h1>
+     </div><!-- End Page Title -->
+
+
+<section class="section">
+    <div class="row">
+      <div class="">
+        <form action="">
+          <input type="text" name="search" id="search">
+          <input class="btn btn-info" type="submit" value='search'>
+        </form>
+        <button type="button" class="btn btn-info" style="margin-left: 80%;margin-bottom: 5%;float:left"><a style="color: black" href="/admin/addRefferalOffer">Add Refferal Offer</a></button>
+
+      </div>
+      <div class="col-lg-12">
+       
+        <div class="card">
+          <div class="card-body">
+           
+            <!-- Table with stripped rows -->
+            <table class="table datatable">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Offer</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Expiry</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+               
+                 <% if(refferalOffers.length>0) {
+                  for(let i=0;i<refferalOffers.length;i++){ %>
+                    <tr>
+                    <td><%= i+1 %></td>
+                    <td><%= refferalOffers[i].refferalCode %></td>
+                    <td><%= refferalOffers[i].status %></td>
+                    <td><%= refferalOffers[i].endDate.toLocaleDateString() %></td>
+                    <td>
+                      <button type="button" class="btn btn-info"> <a href="/admin/viewRefferalOffer?id=<%=refferalOffers[i]._id%>" style="color:black">view</a></button>
+                      <button type="button" class="btn btn-info"><a href="/admin/editRefferalOffer?id=<%=refferalOffers[i]._id%>" style="color:black">Edit</a> </button>
+                      <button type="button" class="btn btn-info" onclick="confirmDelete('<%=refferalOffers[i]._id%>')" style="color:black">Delete </button>
+                    </td>
+                    </tr>
+                  <%}
+                 }%>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+ <script>
+  function confirmDelete(offerId){
+    swal({
+  title: "Are you sure?",
+  text: "You want to delete this offer!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    window.location.href ="/admin/deleteRefferalOffer?id=" +offerId;
+    swal("The offer has been deleted!", {
+      icon: "success",
+    });
+  } 
+});
+  }
+  
+  </script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<% - include("../partials/adminpartials/footer.ejs") %>

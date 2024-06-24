@@ -1,0 +1,94 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Edit Category</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-10" >
+
+          <div class="card">
+            <div class="card-body">
+          
+
+              
+              <form action="/admin/update_category?id=<%=categoryData._id%>" method="post" enctype="multipart/form-data" onsubmit="return validateCategory()" >
+                <div class="row mb-4 mt-3">
+                  <label for="categoryName" class="col-sm-2 col-form-label">Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="categoryName" class="form-control" value="<%=categoryData.categoryName%>">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="description" class="col-sm-2 col-form-label">Description</label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" name="description"  style="height: 100px" ><%=categoryData.description%></textarea>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                 <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+          </form>
+
+            </div>
+          </div>
+
+        </div>
+        <script>
+          function validateCategory(){
+          let name= document.getElementsByName("categoryName")[0];
+          let description=document.getElementsByName("description")[0];
+          var isValid = true;
+          if(name.value.trim()===""){
+            highlightField(name);
+            name.placeholder="Field is empty";
+            isValid=false;
+          }else{
+            removeHighlight(name);
+            name.placeholder="";
+            }
+          if(description.value.trim()=== ""){
+            highlightField(description);
+            description.placeholder="feild is empty.";
+            isValid=false;
+          }else {
+            removeHighlight(description);
+          }
+          return isValid;
+        }
+        function highlightField(field){
+          field.style.borderColor="red";
+          field.focus();
+        }
+        function removeHighlight(field){
+          field.style.borderColor='';
+        }
+         
+        function validateImage(){
+          var fileData = document.getElementsByName("catImage")[0];
+          var fileUploadPath = fileData.value;
+          let isValid = true;
+          if(fileUploadPath ==''){
+            alert('please upoad an image');
+          }else{
+            var extension = fileUploadPath.substring(fileUploadPath.lastIndexOf('.')+1).toLowerCase();
+          }
+          if(extension == 'jpg' || extension == 'png' || extension == 'jpeg'){
+            if(fileData.files && fileData.files[0]){
+              var reader = new FileReader();
+              reader.onload = function(e){
+                $(catImage).attr('src',e.target.result);
+              }
+              reader.readAsDataURL(fileData.files[0]);
+            }
+          }else{
+            alert('only jpg and png type files are allowed');
+            isValid=false;
+          }
+        }
+      </script>
+        <%- include("../partials/adminpartials/footer.ejs") %>

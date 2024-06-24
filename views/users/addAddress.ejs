@@ -1,0 +1,208 @@
+<%- include('../partials/userPartials/header') %>
+
+<section class="section" style="margin: 10% 15%;">
+    <div class="row">
+      <div class="col-lg-10" >
+
+        <div class="card">
+          <div class="card-body">
+        
+            <form id="addressForm" action="/users/save_address" method="post" onsubmit="return validateForm()">
+              <div class="row mb-4 mt-3">
+                <label for="Name" class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                  <input type="text" name="name" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-4 mt-3">
+                <label for="Mobile" class="col-sm-2 col-form-label">Mobile</label>
+                <div class="col-sm-10">
+                  <input type="number" name="mobile" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-4 mt-3">
+                <label for="alternativeMob" class="col-sm-2 col-form-label">Alternative Mobile</label>
+                <div class="col-sm-10">
+                  <input type="number" name="alternativeMob" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-4 mt-3">
+                <label for="house" class="col-sm-2 col-form-label">House Name</label>
+                <div class="col-sm-10">
+                  <input type="text" name="houseName" class="form-control">
+                </div>
+              </div>
+            <div class="row mb-4 mt-3">
+                <label for="place" class="col-sm-2 col-form-label">Place</label>
+                <div class="col-sm-10">
+                  <input type="text" name="place" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-4 mt-3">
+                <label for="landmark" class="col-sm-2 col-form-label">Landmark</label>
+                <div class="col-sm-10">
+                  <input type="text" name="landmark" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-4 mt-3">
+                <label for="city" class="col-sm-2 col-form-label">City</label>
+                <div class="col-sm-10">
+                  <input type="text" name="City" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-4 mt-3">
+                <label for="state" class="col-sm-2 col-form-label">State</label>
+                <div class="col-sm-10">
+                  <input type="text" name="State" class="form-control">
+                </div>
+              </div>
+              <div class="row mb-4 mt-3">
+                <label for="pin" class="col-sm-2 col-form-label">PIN Code</label>
+                <div class="col-sm-10">
+                  <input type="number" name="pin" class="form-control">
+                </div>
+              </div>
+              <button type="submit"  class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" style="width: fit-content;margin: auto;">Add address</butto>
+            </form>
+            
+          </div>
+        </div>
+
+      </div>
+</section>
+<script>
+  function validateForm() {
+      var name = document.getElementsByName("name")[0];
+      var Mobile = document.getElementsByName("mobile")[0];
+      var alternativeMobile = document.getElementsByName("alternativeMob")[0];
+      var houseName= document.getElementsByName("houseName")[0];
+      var place= document.getElementsByName("place")[0];
+      var landmark= document.getElementsByName("landmark")[0];
+      var City= document.getElementsByName("City")[0];
+      var State= document.getElementsByName("State")[0];
+      var pin= document.getElementsByName("pin")[0];
+      
+      var isValid = true;
+
+      if (name.value.trim() === "") {
+          highlightField(name);
+          name.placeholder = "Field is empty";
+          isValid = false;
+      }else if (name.value.length < 4) {
+          highlightField(name);
+          alert("Name should be at least 4 characters long.");
+          isValid = false;
+      }  else {
+          removeHighlight(name);
+          name.placeholder = "";
+      }
+     
+      if(Mobile.value.trim()=== ""){
+        highlightField(Mobile);
+        Mobile.placeholder = "Field is empty";
+        isValid = false;
+      }else if(Mobile.value.length !== 10){
+        highlightField(Mobile);
+        alert("Mobile number should have 10 digits");
+      }else{
+        removeHighlight(Mobile);
+        Mobile.placeholder = "";
+      }
+      if(alternativeMobile.value.trim()=== ""){
+        highlightField(alternativeMobile);
+        alternativeMobile.placeholder = "Field is empty";
+        isValid = false;
+      }else if(alternativeMobile.value.length !== 10){
+        highlightField(alternativeMobile);
+        alert("Mobile number should have 10 digits");
+      }else{
+        removeHighlight(alternativeMobile);
+        alternativeMobile.placeholder = "";
+      }
+      if (houseName.value.trim() === "") {
+          highlightField(houseName);
+          houseName.placeholder = "Field is empty";
+          isValid = false;
+      }else if (houseName.value.length < 4) {
+          highlightField(houseName);
+          alert("House Name should be at least 4 characters long.");
+          isValid = false;
+      }  else {
+          removeHighlight(houseName);
+          houseName.placeholder = "";
+      }
+      if (place.value.trim() === "") {
+          highlightField(place);
+          place.placeholder = "Field is empty";
+          isValid = false;
+      }else if (place.value.length < 4) {
+          highlightField(place);
+          alert("Place should be at least 4 characters long.");
+          isValid = false;
+      }  else {
+          removeHighlight(place);
+          place.placeholder = "";
+      }
+      if (landmark.value.trim() === "") {
+          highlightField(landmark);
+          landmark.placeholder = "Field is empty";
+          isValid = false;
+      }else if (landmark.value.length < 4) {
+          highlightField(landmark);
+          alert("Landmark should be at least 4 characters long.");
+          isValid = false;
+      }  else {
+          removeHighlight(landmark);
+          landmark.placeholder = "";
+      }
+      if (City.value.trim() === "") {
+          highlightField(City);
+          City.placeholder = "Field is empty";
+          isValid = false;
+      }else if (City.value.length < 4) {
+          highlightField(City);
+          alert("City should be at least 4 characters long.");
+          isValid = false;
+      }  else {
+          removeHighlight(City);
+          City.placeholder = "";
+      }
+      if (State.value.trim() === "") {
+          highlightField(State);
+          State.placeholder = "Field is empty";
+          isValid = false;
+      }else if (State.value.length < 4) {
+          highlightField(State);
+          alert("State should be at least 4 characters long.");
+          isValid = false;
+      }  else {
+          removeHighlight(State);
+          State.placeholder = "";
+      }
+      if (pin.value.trim() === "") {
+          highlightField(pin);
+          pin.placeholder = "Field is empty";
+          isValid = false;
+      }else if (pin.value.length !== 6) {
+          highlightField(pin);
+          alert("PIN code should be 6 characters long.");
+          isValid = false;
+      }  else {
+          removeHighlight(pin);
+          pin.placeholder = "";
+      }
+     return isValid;
+  }
+
+  function highlightField(field) {
+      field.style.borderColor = "red";
+      field.focus();
+  }
+
+  function removeHighlight(field) {
+      field.style.borderColor = "";
+  }
+</script>
+
+    
+      <%- include('../partials/userPartials/footer'); %>

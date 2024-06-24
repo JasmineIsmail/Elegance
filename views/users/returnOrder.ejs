@@ -1,0 +1,69 @@
+<%- include('../partials/userPartials/header.ejs') %>
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebar" class="sidebar-profile col-md-2">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/user_profile">
+          <span><strong>Profile</strong> </span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/manage_address">
+          <span><strong>Manage Address</strong> </span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/orders">
+          <span><strong>Orders</strong></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/wallet">
+          <span><strong>Wallet</strong></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/change_password">
+          <span><strong>Change Password</strong></span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/logout">
+          <span><strong>Logout</strong></span>
+        </a>
+      </li>
+    </ul>
+
+</nav><!-- End Sidebar-->
+<h3 class="text-center mt-5 pt-5">RETURN PRODUCT</h3>
+<div class="col-md-8 main-content ml-100">
+    
+        <div class="row">
+            <h5> Are you not satisfied with our product ?</h5>
+        </div>
+        <div class="row">
+          <form method="post" action="/users/returnOrder/<%=orderId%>?id=<%=product._id%>">
+            <div  style="display: flex;">
+               <image src="/public/uploads/<%=product.images[0]%>" width="80em" height="80em"></image>  
+            </div>
+            <div><p>order Id :<%= orderId %></p></div>
+            <div><p>Item :<%= product.Name %></p></div>
+            <div>
+              <label for="returnReason" class="form-label"> Please tell us why you are returning the product </label>
+              <input type="text" id="returnReason" name="returnReason" class="form-control" height="50em">
+              <button type="submit" class="btn btn-dark">Submit</button>
+            </div>
+          </form>
+        </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/userPartials/footer2.ejs') %>

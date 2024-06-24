@@ -1,0 +1,62 @@
+<%- include('../partials/userPartials/header.ejs') %>
+
+<!-- breadcrumb -->
+<div class="container">
+    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+        <a href="/users/home" class="stext-109 cl8 hov-cl1 trans-04">
+            Home
+            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+        </a>
+
+        <span class="stext-109 cl4">
+            Shoping Cart
+        </span>
+    </div>
+</div>
+<!-- Shoping Cart -->
+<form class="bg0 p-t-75 p-b-85">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+                <div class="m-l-25 m-r--38 m-lr-0-xl">
+                    <div class="wrap-table-shopping-cart">
+                        <table class="table-shopping-cart">
+                            <tr class="table_head">
+                                <th class="column-1">Product</th>
+                                <th class="column-1"></th>
+                                <th class="column-1">Price</th>
+                                <th class="column-2">Action</th>
+                            </tr>
+                            <%for(let i=0;i<products.length;i++){%>
+                                <tr class="table_row">
+                                    <td class="column-1"><%=products[i].productId.Name %></td>
+                                    <td class="column-1">
+                                        <div class="how-itemcart1">
+                                            <img src="/public/uploads/<%=products[i].productId.images[0]%>" alt="IMG">
+                                        </div>
+                                    </td>
+                                    <td class="column-1"><%= products[i].productId.price %></td>
+                                    <td class="column-2"> <div >
+                                        <button type="button" class="btn btn-light" style="border-radius: 15%;">  <a href="/users/movetoCart?id=<%= products[i].productId._id %>&count=1"> Move to cart</a> </button>
+                                        <button type="button" class="btn btn-light" style="border-radius: 15%;"> <a href="/users/removeWishlist?id=<%= products[i].productId._id %>"> Remove </a> </button>
+                                    </div></td>
+                                </tr>
+                            <%}%>
+                           
+                        </table>
+                    </div>
+
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<%- include('../partials/userPartials/footer.ejs') %>
+
+    
+
+  

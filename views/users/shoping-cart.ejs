@@ -1,0 +1,173 @@
+<%- include('../partials/userPartials/header.ejs') %>
+
+
+	<!-- breadcrumb -->
+	<div class="container">
+		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+			<a href="/users/home" class="stext-109 cl8 hov-cl1 trans-04">
+				Home
+				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+			</a>
+
+			<span class="stext-109 cl4">
+				Shoping Cart
+			</span>
+		</div>
+	</div>
+		
+
+	<!-- Shoping Cart -->
+	<form class="bg0 p-t-75 p-b-85">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+					<div class="m-l-25 m-r--38 m-lr-0-xl">
+						<div class="wrap-table-shopping-cart">
+							<table class="table-shopping-cart">
+								<tr class="table_head">
+									<th class="column-1">Product</th>
+									<th class="column-2">Price</th>
+									<th class="column-3">Quantity</th>
+									<th class="column-4">Total</th>
+									<th class="column-5">Delete</th>
+								</tr>
+								<% if(cartData && cartItems>0) {
+
+									for(let i=0;i<cartItems;i++){ %>
+										<tr class="table_row">
+											<td class="column-1">
+												<div class="how-itemcart1">
+													<img src="/public/uploads/<%=cartImages[i] %>" alt="IMG">
+												</div>
+											</td>
+											<% if(products[i].offerPrice == products[i].productPrice) {%>
+											<td class="column-2" id="productPrice_<%= i %>"><%= products[i].productPrice %> </td>
+											<%}
+								 			else if(products[i].offerPrice !== products[i].productPrice) {%>
+												<td class="column-2"><span><del><%= products[i].productPrice %></del></span>
+													<span class="text-success fw-bold"  id="productPrice_<%= i %>"><%= products[i].offerPrice %> </span>
+												</td>
+											<%}%>
+											<td class="column-3">
+												<div class="wrap-num-product flex-w m-l-auto m-r-0">
+													<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+														<button type="button" onclick="changeQuantity('<%= cartData._id %>','<%= products[i].productId._id %>',-1,'<%=i%>')">
+															<i class="fs-16 zmdi zmdi-minus"></i>
+														</button>
+													</div>
+		
+													<input class="mtext-104 cl3 txt-center num-product" type="number" name="product_count" id='count_item_<%= i %>' value="<%= products[i].count %>">
+													<span id="validation_message"></span>
+													<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+														<button type="button" onclick="changeQuantity('<%= cartData._id %>','<%=products[i].productId._id %>',1,'<%=i%>')">
+															<i class="fs-16 zmdi zmdi-plus"></i>
+														</button>
+													</div>
+												</div>
+											</td>
+											<% if(products[i].offerPrice == products[i].productPrice) {%>
+											<td class="column-4" id="pricePerItem_<%= i %>"><%= totalPriceperItem[i] %></td>
+											<%}
+								 			else if(products[i].offerPrice !== products[i].productPrice) {%>
+												<td class="column-4" ><span><del><%= totalPriceperItem[i] %></del></span>
+													<span class="text-success fw-bold" id="pricePerItem_<%= i %>"><%= discountPerItem[i] %> </span>
+											<%}%>
+											<td class="column-5">
+												<div class="flex-c-m stext-80 cl2 size-80 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-7 m-l-80">
+													<button id="deleteButton" type="button" onclick="confirmDelete('<%=products[i].productId._id%>')"> Delete </button>
+												</div>
+											</td>
+										</tr>
+									<%}
+								}else { %>
+									<tr>
+									   <td colspan="5">No products in the cart</td>
+									</tr>
+								 <% } %>
+							</table>
+						</div>
+						<% if(Total == reducedTotal){%>
+							
+						<h4 style="margin-left: 30%;margin-top: 5%;" >Cart Total : <span id="total_price"><%=Total %></span></h4>
+						<% }else if(Total !== reducedTotal){%>
+							<h4 style="margin-left: 30%;margin-top: 5%;" >Total : <del><span><%=Total %></span></del>
+								<span class="text-success fw-bold" id="total_price"><%= reducedTotal %> </span> </h4>
+						<%}%>
+						<div style="margin-left: 30%;margin-top: 5%;"  >
+							<button class="flex-c-m stext-101 cl2 size-105  bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
+								<a href ="/users/checkout" style="color: black;">Prcoceed to Checkout</a>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<% if(typeof message !== 'undefined'){ %>
+		<p><%= message %></p>
+	<%}%>
+		
+	
+	<script>
+    	
+	function changeQuantity(cartId, proId, count,index) {
+    	let quantity = parseInt(document.getElementById(`count_item_${index}`).value);
+		count = parseInt(count);
+                $.ajax({
+                  url:'/users/changeProductQuantity',
+                  data:{
+                    cart: cartId,
+                    product: proId,
+                    count: count,
+                    quantity:quantity,
+                  },
+                  method:'post',
+                  success:(response)=>{
+					if (response.removeProductPrompt) {
+						swal({
+  							icon: "warning",
+							text: "Please enter a positive quantity"
+						});
+					}else if(response.stockOut){
+						swal({
+  							icon: "info",
+							text: "This product is stock out "
+						});
+					}else if(response.success){
+						console.log(response.updatedPrice);
+						const newCount =document.getElementById(`count_item_${index}`).value = quantity + count;
+					  	const productPrice=parseFloat(document.getElementById(`productPrice_${index}`).textContent);
+						if(response.updatedPrice === response.totalWithDiscount){
+							document.getElementById(`pricePerItem_${index}`).textContent = productPrice*newCount;
+					  		document.getElementById('total_price').innerHTML = response.updatedPrice;
+						}else if(response.updatedPrice != response.totalWithDiscount){
+							document.getElementById(`pricePerItem_${index}`).textContent = productPrice*newCount;
+					  		document.getElementById('total_price').innerHTML = response.totalWithDiscount;
+						}
+					}	
+                  }           
+                })
+			}
+
+	
+function confirmDelete(productId){
+	swal({
+  		title: "Are you sure?",
+  		text: "You want to remove this product from cart",
+  		icon: "warning",
+  		buttons: true,
+  		dangerMode: false,
+	})
+.then((willDelete) => {
+  if (willDelete) {
+	window.location.href = "/users/deleteItem?id=" + productId;
+    swal("The product is removed from cart", {
+      icon: "success",
+    });
+  }
+});	
+return false;
+}
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<%- include('../partials/userPartials/footer.ejs') %>

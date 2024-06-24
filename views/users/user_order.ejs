@@ -1,0 +1,209 @@
+<%- include('../partials/userPartials/header.ejs') %>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<nav id="sidebar" class="sidebar-profile col-md-2">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+          <span><strong>Hello, <%= user.name %></strong>
+          </span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/user_profile">
+          <span><strong>Profile</strong> </span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/manage_address">
+          <span><strong>Manage Address</strong> </span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/orders">
+          <span><strong>Orders</strong></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/wallet">
+          <span><strong>Wallet</strong></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/change_password">
+          <span><strong>Change Password</strong></span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/logout">
+          <span><strong>Logout</strong></span>
+        </a>
+      </li>
+    </ul>
+
+</nav><!-- End Sidebar-->
+<main class="col-md-10 main-content">
+    <div class="section-profile">
+        <div class="profile-data">
+          <%for (const order of orders) {
+            for (const product of order.products) {%>
+              <div class="card mb-3 ml-1" style="max-width: 700px;">
+                <div class="row g-0">
+                <div class="col-md-4">
+                   <img src="/public/uploads/<%=product.productId.images[0]%>" class="img-fluid rounded-start" alt="<%=product.productId.Name%>">
+                   <p class="card-text text-secondary ml-5"> Product status :<%= product.status %></p>
+                    <% if(!(product.status == "Cancelled" || product.status =='Delivered' || product.status== "Returned")){%>
+                      <a href="/users/cancelOrder/<%=order.order_Id %>?id=<%=product.productId._id%>" style="text-decoration:none ;"><p class="text-secondary ml-5">Cancel Product Order</p></a>
+                    <%} else if(product.status == "Delivered" ){%>
+                     <a href="/users/returnOrder/<%=order.order_Id %>?id=<%=product.productId._id%>"  style="text-decoration:none ;"><p class="text-secondary ml-5">Return</p></a>
+                     <%}%>
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title"> <%=product.productId.Name %></h5>
+                    <p class="card-text"><strong>Order Id: <%= order.order_Id %></strong> </p>
+                    <h6>Product Price : <%=product.productId.price%></h6>
+                    <p class="card-text">Order created on :<%= order.date %> </p>
+                    <p class="card-text"><strong>Deivery Address</strong><br>
+                        <%=deliveryAddress[0].name %>
+                        <%=deliveryAddress[0].houseName %> ,<%=deliveryAddress[0].place %> ,<%=deliveryAddress[0].landmark %><br>
+                        <%=deliveryAddress[0].City %>  ,<%=deliveryAddress[0].State %> <br>
+                        <%=deliveryAddress[0].pin %> <br>
+                        <%=deliveryAddress[0].mobile %>  </p>
+                    <p class="card-text text-secondary" >Order Status : <%= order.status %></p>
+                    <% if(order.status == "Delivered"){ %>
+                      <button class="btn btn-dark mt-5 mb-3" onclick="downloadInvoice('<%= order.order_Id %>')">Download Invoice</button>
+                    <%}%>
+                    <% if(order.status == "Payment pending") {%>
+                      <a href="#"onclick="(continuePayment('<%= order.order_Id %>'))" style="text-decoration: none;color: green;"><p>Complete the order </p></a>
+                      <%}%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <%}
+          }%>
+        </div>
+      </div>
+      <div class="pagination">
+        <% 
+            const pagesPerGroup = 4; // Number of pages per group
+            const currentPageGroup = Math.ceil(currentPage / pagesPerGroup); // Current page group
+            const startPage = (currentPageGroup - 1) * pagesPerGroup + 1; // Starting page of the current group
+            const endPage = Math.min(totalPages, currentPageGroup * pagesPerGroup); // Ending page of the current group
+            const previousGroupPage = startPage - 1; // The page before the current group
+            const nextGroupPage = endPage + 1; // The first page of the next group
+          %>
+          <% if (previousGroupPage > 0) { %>
+            <a href="?page=<%=previousGroupPage%>" ><button type="button" class="btn btn-light">Previous</button></a>
+          <% } %>
+
+          <% for(let i =startPage; i <= endPage; i++) { %>
+            <a href="?page=<%= i %>" <%= i === currentPage ? 'class="active"' : '' %>><button type="button" class="btn btn-light"><%= i %></button></a>
+          <% } %>
+
+          <% if (nextGroupPage <= totalPages) { %>
+            <a href="?page=<%= nextGroupPage %>"><button type="button" class="btn btn-light">Next</button></a>
+          <% } %>
+      </div>
+</main>
+
+<%- include('../partials/userPartials/footer2.ejs') %>
+<style>
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  color: #fcfcfc;
+  padding: 8px 12px;
+  text-decoration: none;
+  margin: 0 4px;
+}
+
+.pagination a.active {
+  background-color: #f5f5f5;
+  color: #fff;
+  border-color: #ffffff;
+}
+</style>
+<script>
+function continuePayment(order_Id){
+  console.log("hello");
+  console.log(order_Id);
+  $.ajax ({
+    url : '/users/continuePayment',
+    method:"post",
+    data:{order_Id},
+    success:(response) =>{
+      console.log(response);
+      if(response.success == true){
+        razorPayment(response.order)
+      }
+    }
+  })
+}
+function razorPayment(order){
+  
+  var options = {
+    "key": "rzp_test_MqnCi6yLhRGaUz", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": " Elegance", //your business name
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler":function (response){
+                    verifyPayment(response, order); // Call the verifyPayment function
+                },
+    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+        "name": "Gaurav Kumar", //your customer's name
+        "email": "gaurav.kumar@example.com", 
+        "contact": "9000090000"  //Provide the customer's phone number for better conversion rates 
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+}
+var rzp1 = new Razorpay(options);
+      rzp1.open();
+
+}
+function verifyPayment(payment,order){
+            $.ajax({
+                url:'/users/verifyPayment',
+                method:'post',
+                data:{
+                    payment,
+                    order,
+                },
+                success:(response) => {
+                  console.log("after verify payment: ",response);
+                    if (response.success) {
+                        window.location.href = '/users/orders';
+                    } else {
+                        alert('Payment Failed');
+                    }
+                }
+            })
+        }
+      function downloadInvoice(orderId) {
+      const url = `http://localhost:3000/users/invoice?id=${orderId}`;
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "invoice.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    </script>
+</script>

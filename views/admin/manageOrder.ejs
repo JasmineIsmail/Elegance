@@ -1,0 +1,135 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1> Manage Order</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/users/dashboard">Home</a></li>
+          <li class="breadcrumb-item">Order</li>
+          <li class="breadcrumb-item active">Profile</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+        
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  <h5 class="card-title">order Details</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Order Id</div>
+                    <div class="col-lg-9 col-md-8"><%= order.order_Id %></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Address</div>
+                    <div class="col-lg-9 col-md-8"><%= deliveryAddress[0].name %>
+                    <br>  <%= deliveryAddress[0].houseName %>,<%= deliveryAddress[0].place %><br>
+                    <%= deliveryAddress[0].landmark %> ,<%= deliveryAddress[0].City %>,
+                    <%= deliveryAddress[0].State%>,<%=deliveryAddress[0].pin%><br>
+                    <%= deliveryAddress[0].mobile %>
+                  </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Products</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12 label">
+                    <% order.products.forEach((item)=>{ %>
+                      <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                          
+                          <% for(let i=0;i<productData.length;i++){%>
+                              <h5 class="card-title"><%=productData[i].Name%></h5>
+                              <div class="col-md-4">
+                                <img src="/public/uploads/<%=productData[i].images[0]%>" class="card-img-top" alt="<%=productData[i].Name%>" width ="20em>", height="80rem">
+                              </div>
+                              <div class="col-md-8">
+                                <p class="card-text">
+                                  Quantity:<%= item.count%>
+                                    <br>Price : <%= item.productPrice%>
+                                    <form action="/admin/manageorder/singleproduct/<%=productData[i]._id %>?Id=<%=order.order_Id%>" method="post">
+                                      <select name="productOrderStatus" class="form-control">
+                                        
+                                        <option> <%=item.status%> </option>
+                                        <option value="Pending" <%= item.status === 'Pending' ? 'selected' : '' %> > Pending </option>
+                                        <option value="Placed" <%= item.status === 'Placed' ? 'selected' : '' %>>Placed</option>
+                                        <option value="Paid" <%= item.status === 'Paid' ? 'selected' : '' %>>Paid</option>
+                                        <option value="Shipped" <%= item.status === 'Shipped' ? 'selected' : ''%> > Shipped </option>
+                                        <option value="Delivered" <%= item.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                        <option value="Cancelled" <%= item.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                      </select>
+                                      <button type="submit" class="btn btn-sm font-sm rounded btn-brand mt-3">Change Status</button>
+                                    </form>
+                                </p>
+                              </div>
+                          <%}%>
+                         
+                         
+                        </div>
+                      </div>
+                   
+                      </div>
+                    <%})%>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Price</div>
+                    <div class="col-lg-9 col-md-8"><%= order.Amount%></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Order Status</div>
+                    
+                    <div class="col-lg-9 col-md-8">
+                      <form action="/admin/manageorder?id=<%= order.order_Id %>" method="post">
+                        <select name="orderStatus" class="form-control">
+                          
+                          <option> <%=order.status%> </option>
+                          <option value="Pending" <% order.status === 'Pending' ? 'selected' : '' %>>Pending </option>  
+                          <option value="Placed" <%= order.status === 'Placed' ? 'selected' : '' %>>Placed</option>
+                          <option value="Paid" <%= order.status === 'Paid' ? 'selected' : '' %>>Paid</option>
+                          <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>> Shipped </option>
+                          <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                          <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                         
+                      </select>
+                      <button type="submit" class="btn btn-sm font-sm rounded btn-brand mt-3">Change Status</button>
+                    </div>
+                  </div>
+                </form>
+
+                 
+                  
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label"> Order Created at</div>
+                    <div class="col-lg-9 col-md-8"><%= order.date %></div>
+                  </div>
+
+                  
+                 
+
+                </div>
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+  
+ 
+<%- include("../partials/adminpartials/footer.ejs") %>

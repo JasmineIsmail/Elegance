@@ -1,0 +1,63 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Edit Product Offer</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-10" >
+          <div class="card">
+            <div class="card-body">
+              <form action="/admin/editProductOffer?id=<%=productOffer._id%>" method="post">
+                <div class="row mb-4 mt-3">
+                  <label for="offerName" class="col-sm-2 col-form-label">Offer name</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="text" id="offerName" name="offerName" value="<%= productOffer.name %>">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                    <label for="category" class="col-sm-2 col-form-label">Product Type</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="startDate" name="startDate" value="<%= productOffer.productType%>">
+                    </div>
+                </div>
+               
+                <div class="row mb-4 mt-3">
+                  <label for="startDate" class="col-sm-2 col-form-label">Valid from</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="date" id="startDate" name="startDate" value="<%= productOffer.startDate%>">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                    <label for="expiryDate" class="col-sm-2 col-form-label">Expiry Date</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" type="date" name="expiryDate" value="<%=productOffer.endDate%>">
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="discountPercentage" class="col-sm-2 col-form-label">Discount Percentage</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="number" name="discountPercentage" value="<%=productOffer.discountPercentage%>">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="status" class="col-sm-2 col-form-label">Status</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="string" name="status" value="<%=productOffer.status %>">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                 <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+        
+        <%- include("../partials/adminpartials/footer.ejs") %></main>

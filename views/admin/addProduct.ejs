@@ -1,0 +1,244 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Add Product</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-10" >
+        <div class="card">
+            <div class="card-body">
+              <form id="uploadForm" class="row g-3 needs-validation" novalidate action="/admin/upload_product" method="post" enctype="multipart/form-data" >
+                <div class="row mb-4 mt-3">
+                  <label for="Name" class="col-sm-2 col-form-label">Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="Name" class="form-control" value="<%=values.Name? values.Name : '' %>" required>
+                    <% if (error && error.Name) { %>
+                      <span class="text-danger"><%= error.Name %></span>
+                    <% }else if(error && error.nameLength){%>
+                      <span class="text-danger"><%= error.nameLength %></span>
+                    <%} %>
+                  </div> 
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="images" class="col-sm-2 col-form-label">Images</label>
+                  <div class="col-sm-10">
+                    <input id="productImage" class="form-control" type="file" name="images" accept="image/*" multiple required>
+                    <div id="preview" style="display: none;">
+                      
+                    </div>
+                    <button id="crop-btn" style="display: none;">Crop</button>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="description" class="col-sm-2 col-form-label" name="description">Description</label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" name="description"  style="height: 100px" required><%= values ? values.description: '' %></textarea>
+                    <% if (error && error.description) { %>
+                      <span class="text-danger"><%= error.description %></span>
+                    <% }else if(error && error.descriptionLength){%>
+                      <span class="text-danger"><%= error.descriptionLength %></span>
+                    <%} %>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="price" class="col-sm-2 col-form-label">Price</label>
+                  <div class="col-sm-10">
+                    <input type="number" name="price" class="form-control" value="<%= values ? values.price : '' %>" required>
+                    <% if (error && error.price) { %>
+                      <span class="text-danger"><%= error.price %></span>
+                    <% }%>
+                    <%if(error && error.negativePrice){%>
+                      <span class="text-danger"><%= error.negativePrice %></span>
+                    <%} %>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="category" class="col-sm-2 col-form-label" name="category">category</label>
+                    <div class="col-sm-10">
+                      <select name="category" class="form-control" required>
+                        <option>select</option>
+                        <% for(let i=0;i<category.length;i++){%>
+                          <option value="<%=category[i].categoryName%>" ><%=category[i].categoryName%></option>
+                          
+                        <%}%>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-4 mt-3">
+                  <label for="category" class="col-sm-2 col-form-label">Quantity</label>
+                  <div class="col-sm-10">
+                    <input type="number" name="quantity" class="form-control" value="<%= values ? values.quantity: '' %>" required>
+                    <% if (error && error.quantity) { %>
+                      <span class="text-danger"><%= error.quantity %></span>
+                    <% } 
+                    if(error && error.negativeQuantity){%>
+                      <span class="text-danger"><%= error.negativeQuantity %></span>
+                    <%} %>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                 <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+          </form>
+
+            </div>
+          </div>
+
+        </div>
+<%- include("../partials/adminpartials/footer.ejs") %>
+<style>
+  #preview {
+      margin-top: 20px; 
+      margin-left: 5px;
+  }
+  #preview img{
+    margin-right: 10px;
+    margin-bottom:  10px;
+    display: inline-block;
+    max-width: 100%;
+    cursor: pointer;
+  }
+</style>
+<link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet"/>
+<script src="https://unpkg.com/cropperjs"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+let cropper;
+let currentImage;
+function previewFiles() {
+  const preview = document.querySelector("#preview");
+  //const files = document.querySelector("input[type=file]").files;
+  const fileInput = document.querySelector("#productImage");
+  const files = fileInput.files;
+  function readAndPreview(file) {
+    // Make sure `file.name` matches our extensions criteria
+    if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+    const reader = new FileReader();
+
+    reader.addEventListener(
+       "load",
+        () => {
+          const container = document.createElement('div');
+          container.style.display = 'block';
+          container.style.margin = '5px';
+    
+          const image = new Image();
+          image.height = 200;
+          image.title = file.name;
+          image.src = reader.result;
+          image.addEventListener('click',
+          function (){
+            if(cropper){
+              cropper.destroy();
+            }
+            currentImage = image;
+            cropper = new Cropper(image,{
+              aspectRatio :0,
+              viewMode:0,
+            });
+            document.getElementById('crop-btn').style.display ='block';
+          });
+          const deleteButton = document.createElement('button');
+          deleteButton.textContent = 'Delete';
+          deleteButton.style.position = 'relative';
+          deleteButton.style.margin = '10px auto 0';
+         
+          deleteButton.onclick = function () {
+            image.remove();
+            container.remove();  
+            
+            // Clear the file input
+            var input = document.querySelector('input[type="file"]');
+            input.value = '';      
+          };
+          
+          preview.appendChild(image);
+          container.appendChild(deleteButton);
+          preview.appendChild(container);
+          preview.style.display = 'block';
+        },
+        false,
+      );
+    reader.readAsDataURL(file);
+    }
+  }
+
+  // Clear previous preview images
+    while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+    }
+
+    if (files.length > 0) {
+        Array.prototype.forEach.call(files, readAndPreview);
+    } else {
+        preview.style.display = 'none'; // Hide the preview div if no files
+    }
+    
+
+  document.getElementById('productImage').addEventListener('change', previewFiles);
+
+  document.getElementById('crop-btn').addEventListener('click',
+  function(event){
+    event.preventDefault();
+    if(cropper){
+      cropper.getCroppedCanvas().toBlob((blob) => {
+        const imageUrl = URL.createObjectURL(blob);
+        const previewImages = preview.querySelectorAll('img');
+        console.log('Available images in preview:');
+        previewImages.forEach(img => console.log('Image title:', img.title));
+        if (currentImage) {  
+        console.log('Selected image title:', currentImage.title);
+        currentImage.src = imageUrl;
+        currentImage.style.maxWidth = '100px'; // Reset max width for cropped image
+        currentImage.style.cursor = 'pointer';
+        console.log('Image replaced:', currentImage);
+        } else {
+          console.error('Current image not found');
+        }
+        cropper.destroy();
+        cropper = null;
+      });
+    }
+  }
+)};
+
+const picker = document.querySelector("#productImage");
+picker.addEventListener("change", previewFiles);
+
+
+
+
+
+  
+
+function validateImage(){
+    var fileData = document.getElementsByName("productImage")[0];
+    var fileUploadPath = fileData.value;
+    let isValid = true;
+    if(fileUploadPath ==''){
+      alert('please upoad an image');
+    }else{
+      var extension = fileUploadPath.substring(fileUploadPath.lastIndexOf('.')+1).toLowerCase();
+    }
+    if(extension == 'jpg' || extension == 'png' || extension == 'jpeg'){
+      if(fileData.files && fileData.files[0]){
+        var reader = new FileReader();
+        reader.onload = function(e){
+          $(catImage).attr('src',e.target.result);
+        }
+        reader.readAsDataURL(fileData.files[0]);
+      }
+    }else{
+      alert('only jpg and png type files are allowed');
+      isValid=false;
+    }
+  }
+})
+
+</script>  

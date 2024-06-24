@@ -1,0 +1,108 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Add Coupon</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-10" >
+
+          <div class="card">
+            <div class="card-body">
+          
+
+              
+              <form action="/admin/uploadCoupon" method="post" novalidate>
+                <div class="row mb-4 mt-3">
+                  <label for="code" class="col-sm-2 col-form-label">CouponCode</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="code" class="form-control" required>
+                    <% if (error && error.code) { %>
+                      <span class="text-danger"><%= error.code %></span>
+                    <% } %>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="startDate" class="col-sm-2 col-form-label">Valid from</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="date" id="startDate" name="startDate" required>
+                    <% if (error && error.startDate) { %>
+                      <span class="text-danger"><%= error.startDate %></span>
+                    <% } %>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                    <label for="expiryDate" class="col-sm-2 col-form-label">Expiry Date</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" type="date" name="expiryDate" required>
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                    <label for="description" class="col-sm-2 col-form-label">Description</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" type="text" name="description" required>
+                      <% if (error && error.description) { %>
+                        <span class="text-danger"><%= error.description %></span>
+                      <% } %>
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                    <label for="maxUsers" class="col-sm-2 col-form-label">Maximum Count</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" type="number" name="maxUsers" required>
+                      <% if (error && error.maxUsers) { %>
+                        <span class="text-danger"><%= error.maxUsers %></span>
+                      <% } %>
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                    <label for="discountType" class="col-sm-2 col-form-label" name="">DiscountType</label>
+                    <div class="col-sm-10">
+                      <select name="discountType" class="form-control">
+                        <option>select</option>
+                        <option value="Fixed rate">Fixed rate</option>
+                        <option value="Percentage type">Percentage type</option>
+                      </select>
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="discountAmount" class="col-sm-2 col-form-label">Discount Amount</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="number" name="discountAmount" required>
+                    <% if (error && error.discount) { %>
+                      <span class="text-danger"><%= error.discount %></span>
+                    <% } %>
+                  </div>
+              </div>
+                <div class="row mb-4 mt-3">
+                    <label for="maxDiscount" class="col-sm-2 col-form-label">Maximum Discount</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" type="number" name="maxDiscount" required>
+                      <% if (error && error.maxDiscountAmount) { %>
+                        <span class="text-danger"><%= error.maxDiscountAmount %></span>
+                      <% } %>
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                    <label for="maxCartAmount" class="col-sm-2 col-form-label">Maximum Cart Amount</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" type="number" name="maxCartAmount" required>
+                      <% if (error && error.maxCartAmount) { %>
+                        <span class="text-danger"><%= error.maxCartAmount %></span>
+                      <% } %>
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                 <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+          </form>
+
+            </div>
+          </div>
+        </div>
+        
+        <%- include("../partials/adminpartials/footer.ejs") %>

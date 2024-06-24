@@ -1,0 +1,107 @@
+<%- include('../partials/userPartials/header.ejs') %>
+<nav id="sidebar" class="sidebar-profile col-md-2">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+          <span><strong>Hello, <%= user.name %></strong>
+          </span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/user_profile">
+          <span><strong>Profile</strong> </span>
+        </a>
+      </li><!-- End users Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/manage_address">
+          <span><strong>Manage Address</strong> </span>
+        </a>
+      </li><!-- End products Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/orders">
+          <span><strong>Orders</strong></span>
+        </a>
+      </li><!-- End Category Page Nav -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/wallet">
+          <span><strong>Wallet</strong></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/change_password">
+          <span><strong>Change Password</strong></span>
+        </a>
+      </li><!-- End Register Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/users/logout">
+          <span><strong>Logout</strong></span>
+        </a>
+      </li><!-- End Login Page Nav -->
+    </ul>
+
+</nav><!-- End Sidebar-->
+<main class="col-md-10 main-content">
+    <div class="section-profile">
+
+        <div class="profile-data">
+            <h5 class="card-title profile-title">Manage Address</h5>
+                <div class="row profile-values">
+                    <ul>
+                        <% for(let i=0;i<address.length;i++) { %>
+                            <div class="row">
+                                
+                                <div class="col-lg-9 col-md-8">
+                                <li>
+                                    <%=address[i].name %>
+                                   ,
+                                   <%=address[i].houseName %>
+                                   ,
+                                   <%=address[i].place %>
+                                   ,
+                                   <%=address[i].landmark %>
+                                  <br>
+                                   <%=address[i].City %>
+                                   ,
+                                   <%=address[i].State%>
+                                   ,
+                                   <%=address[i].pin %>
+                                   <br>
+                                   <%=address[i].mobile %>
+                                   <br>
+                                   <%=address[i].alternativeMob%>
+                                   <br>
+                                   <a href="/users/edit_address?id=<%=address[i]._id%>">Edit</a>
+                                   <a href="#" onclick="confirmDelete('<%=address[i]._id %>')">Remove</a>
+                                  </li>
+                                </div>
+                                </ul>
+                               
+                            </div>
+                           <% } %>
+                    </ul>
+                    <a href="/users/add_address">Add address</a>
+        </div>
+    </div>
+</main>
+
+<script>
+    function confirmDelete(address) {
+        var confirmation = confirm("Are you sure you want to remove this address");
+        if (confirmation) {
+            // If the user clicks OK in the confirmation dialog, redirect to the deleteItem URL
+            window.location.href = "/users/delete_address?id=" + address;
+        } 
+    }
+</script>
+
+
+
+<%- include('../partials/userPartials/footer2.ejs') %>
+

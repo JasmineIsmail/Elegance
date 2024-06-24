@@ -1,0 +1,38 @@
+
+.sidebar-profile{
+    height:90vh;
+    width:20%;
+    padding: 1rem;
+    float: left;
+    margin-top: 4rem;
+   position: fixed;
+    background-color:  #ebeef4;
+}
+.nav-item{
+    font-size: 1em;
+    margin-top: 1rem;
+    margin-left: 0.1rem;
+}
+
+.main-content {
+    margin-left:16em;/* Match the width of the sidebar */
+    padding: 2rem;
+}
+.section-profile{
+    margin-top:10rem;
+    margin-left: 8rem;
+}
+.profile-title{
+    font-size: 2rem;
+    margin-bottom:1 rem;
+   
+}
+.profile-values{
+    margin-top:3rem;
+    padding-top:2rem;
+}
+.form-control{
+    width:30px;
+    border-color: black;
+    margin-bottom: 2rem;
+}

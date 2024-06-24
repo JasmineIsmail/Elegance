@@ -1,0 +1,172 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Edit Product</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-10" >
+          <div class="card">
+            <div class="card-body">
+              <form action="/admin/update_product?id=<%=productData._id%>" id="editForm" method="post">
+                <div class="row mb-4 mt-3">
+                  <label for="Name" class="col-sm-2 col-form-label">Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="Name" class="form-control" value="<%=productData.Name%>">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="images" class="col-sm-2 col-form-label">Images</label>
+                  <div class="col-sm-10">
+                    
+                      <% for(let i=0;i<productData.images.length;i++){%>
+                        <div class="image-container">
+                          <a href="#" onclick="confirmDelete( '<%= productData.images[i]%>' , '<%= productData._id %>' )" class="text-danger padding-5"><i class="fa fa-trash-o"></i></a>
+                          <input type="file" id="fileInput-<%= i %>" accept="image/*">
+                          <button type="button" class="btn btn-success update-btn" onclick="uploadImage('<%= productData._id %>', '<%= i %>')"><i class="fa fa-pencil-square"></i>Update</button>
+                          <img id="image-<%= i %>"  src="/public/uploads/<%= productData.images[i] %>" alt="Image <%= i + 1 %>" height="100px" width="100px">
+                        </div>
+                    <% } %>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="description" class="col-sm-2 col-form-label">Description</label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" name="description"  style="height: 100px"><%=productData.description%></textarea>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                    <label for="price" class="col-sm-2 col-form-label">Price</label>
+                    <div class="col-sm-10">
+                      <input type="number" name="price" class="form-control" value="<%=productData.price%>">
+                    </div>
+                  </div>
+                  <div class="row mb-4 mt-3">
+                    <label for="category" class="col-sm-2 col-form-label" name="category">category</label>
+                    <div class="col-sm-10">
+                      <select name="category" class="form-control">
+                        <option><%= productData.category.categoryName  %></option>
+                        <% for(let i=0;i<category.length;i++){%>
+                          <option value=<%=category[i].categoryName%>><%=category[i].categoryName  %></option>
+                        <%}%>
+                      </select>
+                    </div>
+                  </div>
+             
+                <div class="row mb-4 mt-3">
+                  <label for="quantity" class="col-sm-2 col-form-label">Quantity</label>
+                  <div class="col-sm-10">
+                    <input type="number" name="quantity" class="form-control" value="<%=productData.productQuantity%>">
+                  </div>
+                </div>
+              
+                <div class="row mb-4 mt-3">
+                 <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+          </form>
+
+            </div>
+          </div>
+          </div>
+        </div>
+        </section>
+
+
+<%- include("../partials/adminpartials/footer.ejs") %>
+<style>
+  .image-container {
+    position: relative;
+    display: inline-block; 
+    margin: 15px; 
+  }
+  .image-container img {
+    height: 100px;
+    width: auto; 
+    display: block; 
+  }
+  .delete-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: red;
+  }
+  #preview {
+    margin-top: 20px; 
+    margin-left: 5px;
+  }
+  #preview img{
+    margin-right: 10px;
+    margin-bottom:  10px;
+    display: inline-block;
+    max-width: 100%;
+    cursor: pointer;
+  }
+</style>
+
+<script>
+function confirmDelete(image,productId){
+	swal({
+  		title: "Are you sure?",
+  		text: "You want to remove this image",
+  		icon: "warning",
+  		buttons: true,
+  		dangerMode: false,
+	})
+.then((willDelete) => {
+  if (willDelete) {
+    window.location.href = "/admin/deleteImage?id="+productId +"&img="+ image;
+
+    swal("The image is removed.", {
+      icon: "success",
+    });
+  }
+});	
+return false;
+}
+</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script>
+ function uploadImage(productId, imageIndex) {
+    const fileInput = document.getElementById(`fileInput-${imageIndex}`);
+    console.log(fileInput);
+    const file = fileInput.files[0];
+    if (!file) {
+        alert('Please select a file to upload.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('productId', productId);
+    formData.append('imageIndex', imageIndex);
+    formData.append('newPic', file);
+
+    $.ajax({
+        url: '/admin/replaceImg',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            alert('Image updated successfully.');
+            const imgElement = document.getElementById(`image-${imageIndex}`);
+            imgElement.src = `/public/uploads/${response.updatedFilename}`;
+
+        },
+        error: function(error) {
+            console.error('Error uploading image:', error);
+            alert('Failed to upload image.');
+        }
+    });
+}
+</script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

@@ -1,0 +1,39 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Offers</h1>
+      <nav>
+        <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+            <li class="breadcrumb-item">Offers</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+
+<section class="section">
+    <div class="row">
+      <div class="col-lg-10">
+        <div class="card-group">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Category Offers</h5>
+              <p class="card-text"></p>
+              <button  class="btn btn-primary"> <a href="/admin/categoryOffers" style="text-decoration: none;color: white ;" >View Offers</a></button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Product Offers</h5>
+              <button  class="btn btn-primary"> <a href="/admin/productOffers" style="text-decoration: none;color: white ;" >View Offers</a></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+ 
+
+<% - include("../partials/adminpartials/footer.ejs") %>

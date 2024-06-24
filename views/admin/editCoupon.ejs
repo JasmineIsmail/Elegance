@@ -1,0 +1,93 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Edit Coupon</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-10" >
+          <div class="card">
+            <div class="card-body">
+              <form action="/admin/editCoupon?id=<%=coupon._id%>" method="post">
+                <div class="row mb-4 mt-3">
+                  <label for="code" class="col-sm-2 col-form-label">Coupon Code</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="code" class="form-control" value="<%=coupon.code%>">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="description" class="col-sm-2 col-form-label">Description</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="description" value="<%=coupon.description%>">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                    <label for="startDate" class="col-sm-2 col-form-label">Valid from</label>
+                    <div class="col-sm-10">
+                      <input type="date" name="startDate" class="form-control" value="<%=coupon.startDate.toISOString().slice(0,10)%>">
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                    <label for="expiryDate" class="col-sm-2 col-form-label">Expiry Date</label>
+                    <div class="col-sm-10">
+                      <input type="date" name="expiryDate" class="form-control" value="<%=coupon.expiryDate.toISOString().slice(0,10)%>">
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="maxUsers" class="col-sm-2 col-form-label">Maximum count</label>
+                  <div class="col-sm-10">
+                    <input type="number" name="maxUsers" class="form-control" value="<%=coupon.maxUsers%>">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="discountType" class="col-sm-2 col-form-label">Discount type</label>
+                    <div class="col-sm-10">
+                      <select name="discountType" class="form-control" value="<%=coupon.discountType%>">
+                        <option>select</option>
+                        <option value="Fixed rate" <%=coupon.discountType==="Fixed rate"?'selected':"" %>>Fixed rate</option>
+                        <option value="Percentage type" <%=coupon.discountType === "Percentage type"?'selected':"" %>>Percentage type</option>
+                      </select>
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="discountAmount" class="col-sm-2 col-form-label">Discount amount</label>
+                  <div class="col-sm-10">
+                    <input type="number" name="discountAmount" class="form-control" value="<%=coupon.discountAmount%>">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="maxDiscountAmount%" class="col-sm-2 col-form-label">Maximum discount</label>
+                    <div class="col-sm-10">
+                      <input type="number" name="maxDiscountAmount%" class="form-control" value="<%=coupon.maxDiscountAmount%>">
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="maxCartAmount" class="col-sm-2 col-form-label">Maximum cart amount</label>
+                    <div class="col-sm-10">
+                      <input type="number" name="maxCartAmount" class="form-control" value="<%=coupon.maxCartAmount%>">
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="status" class="col-sm-2 col-form-label">Status</label>
+                    <div class="col-sm-10">
+                      <input type="radio" name="status" id="true" value="true" <%=coupon.status=== true? 'checked':"" %>>
+                      <label for="true">Active</label>
+                      <input type="radio" name="status" id="false" value="false" <%=coupon.status===false?'checked':'' %>>
+                      <label for="false">Inactive</label>
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                 <div class="col-sm-10"> 
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+        
+        <%- include("../partials/adminpartials/footer.ejs") %>

@@ -1,0 +1,68 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Add Category Offer</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-10" >
+          <div class="card">
+            <div class="card-body">
+              <form action="/admin/addCategoryOffer" method="post">
+                <div class="row mb-4 mt-3">
+                  <label for="offerName" class="col-sm-2 col-form-label">Offer name</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="text" id="offerName" name="offerName">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                    <label for="category" class="col-sm-2 col-form-label">Category</label>
+                    <div class="col-sm-10">
+                    
+                      <select class="form-control"  id="category" name="category">
+                        <% category.forEach(cat => {%>
+                      <option value="<%=cat.categoryName %>"><%=cat.categoryName %></option>
+                      <% }); %>
+                      </select>
+                    </div>
+                </div>
+               
+                <div class="row mb-4 mt-3">
+                  <label for="startDate" class="col-sm-2 col-form-label">Valid from</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="date" id="startDate" name="startDate">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                    <label for="expiryDate" class="col-sm-2 col-form-label">Expiry Date</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" type="date" name="expiryDate">
+                    </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="discountPercentage" class="col-sm-2 col-form-label">Discount Percentage</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="number" name="discountPercentage">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="status" class="col-sm-2 col-form-label">Status</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="string" name="status">
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                 <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+        
+        <%- include("../partials/adminpartials/footer.ejs") %>

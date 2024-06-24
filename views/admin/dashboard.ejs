@@ -1,0 +1,325 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+          <div class="row">
+
+            <!-- Sales Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Sales <span>| Today</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-cart"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6><%=sales%></h6>
+                      <!------<span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>-------->
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+
+            <!-- Revenue Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Revenue <span>| This Month</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6><%= totalPrice  %></h6>
+                      <!-----<span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>----->
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Revenue Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xxl-4 col-xl-12">
+
+              <div class="card info-card customers-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Customers <span>| This Year</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-people"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6><%= userCount %></h6>
+                      <!------<span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>------>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Reports -->
+            <div class="col-12">
+              <div class="card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" onclick="salesFilter('week')" href="#">This Week</a></li>
+                    <li><a class="dropdown-item" onclick="salesFilter('month')" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" onclick="salesFilter('year')"href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Sales</h5>
+                  <canvas id="salesChart"></canvas>
+                  
+                </div>
+
+              </div>
+            </div><!-- End Reports -->
+
+            <!-- Recent Sales -->
+            <!-- End Recent Sales -->
+
+            <!-- Top Selling Product -->
+            <div class="col-12">
+              <div class="card top-selling overflow-auto">
+                <div class="card-body pb-0">
+                  <h5 class="card-title"><a href="#">Top Selling Products</a> </h5>
+                  <table class="table table-borderless">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Sold</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% topProducts.forEach((product,index) => { %>
+                        <tr>
+                          <td><%=index +1 %></td>
+                          <td ><%= product.name%> </td>
+                          <td><%=product.price %></td>
+                          <td><%=product.totalSold %> </td>
+                        </tr>
+                      <%});%>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </div><!-- End Top Selling -->
+             <!-- Top Selling Product Category-->
+             <div class="col-12">
+              <div class="card top-selling overflow-auto">
+                <div class="card-body pb-0">
+                  <h5 class="card-title"><a href="#">Top Selling Categories</a> </h5>
+                  <table class="table table-borderless">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Sold</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% topCategory.forEach((category,index) => { %>
+                        <tr>
+                          <td><%= index +1 %> </td>
+                          <td ><%= category.category%> </td>
+                          <td><%= category.totalSold %> </td>
+                        </tr>
+                      <%});%>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </div><!-- End Top Selling Category-->
+
+
+          </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
+        <div class="col-lg-4">
+
+          <!-- Recent Activity -->
+          <div class="card">
+           
+            <div class="card-body">
+              <h5 class="card-title">View Sales </h5>
+              <div class="form-body">
+                <form class="form-horizontal" action="/admin/salesReport" method="POST"> 
+                    <div class="form-group"> 
+                        <div class="col-sm-9"> <select name="timeRange" id="" class="form-control">                                
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="yearly">Yearly</option>
+                        </select></div> 
+                    </div>                                                                            
+                    <div class="col-sm-offset-3"> 
+                        <button type="submit" class="btn btn-default card-title">Sumbit</button> 
+                    </div> 
+                </form>                
+            </div>
+            <div class="form-body">
+              <form class="form-horizontal" action="/admin/salesOnDate" method="POST"> 
+                  <div class="form-group"> 
+                      <label for="startDate" class="col-form-label"><strong>Start Date</strong></label> 
+                      <div class="col-sm-9">
+                          <input type="date" name="fromDate" class="form-control">
+                      </div> 
+                  </div>
+                  <div class="form-group"> 
+                      <label for="endDate" class="col-form-label"><strong>End Date</strong></label> 
+                      <div class="col-sm-9">
+                          <input type="date" name="toDate" class="form-control">
+                      </div> 
+                  </div>                                                                            
+                  <div class="col-sm-offset-2"> 
+                      <button type="submit" class="btn btn-default card-title">Submit</button> 
+                  </div> 
+              </form>                
+          </div>
+        </div>
+      </div><!-- End Recent Activity -->
+
+        </div><!-- End Right side columns -->
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    let chart;
+    document.addEventListener('DOMContentLoaded', async function() {
+    // Call salesFilter function with the default filter value 'month'
+    await salesFilter('month');
+    });
+   async function salesFilter(filterFactor){
+    console.log(filterFactor);
+    let newData = {};
+    const response = await fetch(`/admin/sales/${filterFactor}`);
+    const result  = await response.json();
+      if(!result.success){
+        alert('Error occurred',+result.error);
+            return;
+      }
+      if(result.monthlyData){
+        newData =  result.monthlyData;
+      }else if(result.yearlyData){
+        newData = result.yearlyData;
+      }else if(result.weeklyData){
+        newData =result.weeklyData;
+      }
+     
+
+    const labels = Object.keys(newData);
+    const salesCounts = Object.values(newData).map(orders => orders.length); 
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    if (chart) {
+            chart.destroy();
+        }
+        chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Sales',
+                        data: salesCounts,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+   
+  
+  </script>
+ <%- include("../partials/adminpartials/footer.ejs")  %>
