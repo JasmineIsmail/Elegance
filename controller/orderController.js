@@ -29,8 +29,7 @@ const newOrder = async (req,res)=>{
         const cartData = await Cart.findById({_id:req.body.cartId}).populate({path:"products.productId"});
         const products= cartData.products;
         cartData.products.forEach(async(product)=>{
-            stockUpdate=product.productId.productQuantity- product.count;
-            console.log("stock:",stockUpdate);                                                                                               
+            stockUpdate=product.productId.productQuantity- product.count;                                                                                              
             if(product.count > product.productId.productQuantity){
               flag++;
             }else{
@@ -56,7 +55,6 @@ const newOrder = async (req,res)=>{
             discount:discount
         })
         const orderData = await order.save();
-       // console.log("order data",orderData);
         if(orderData){
             if(paymentMethod=="cod"){
                 if(totalPrice >1000){
@@ -74,7 +72,6 @@ const newOrder = async (req,res)=>{
                  currency:"INR",
                  receipt:"" + order_Id,
                 }); 
-               // console.log("order",order);
                 return res.json({ onlinePayment: true, order});
             }
             if(paymentMethod == "wallet"){
@@ -212,7 +209,7 @@ const cancelOrder = async(req,res)=>{
                 })
             }
             
-        res.redirect('/users/orders');
+        res.redirect('/orders');
     } catch (error) {
         console.log(error.message);
         res.send("error while cancel an order");
@@ -314,16 +311,13 @@ const returnSubmit=async(req,res)=>{
         const orderId= req.params.id;
         const user = req.session.user_id; 
         const orderData = await Order.findOne({ order_Id: orderId });
-        console.log("order datA",orderData);
         const userData = await User.findById({_id:user});
         const userWallet = userData.wallet;
         if (orderData) {
             const currentDate = new Date();
-            console.log("current date",currentDate);
             const maxReturnDays = 7;
             const maxReturnDate = new Date(orderData.date);
             maxReturnDate.setDate(maxReturnDate.getDate() +  maxReturnDays);
-            console.log("maxReturnDate",maxReturnDate);
             if (currentDate <= maxReturnDate) {
              await Order.updateOne({order_Id:orderId,"products.productId":productId},{$set:{"products.$.status":"Returned"}});
              if (orderData.products.length == 1)
@@ -354,7 +348,7 @@ const returnSubmit=async(req,res)=>{
                     await userData.save();
                 }
             })
-            res.redirect('/users/orders');
+            res.redirect('/orders');
             } else {
               res.status(403).json({ noReturn: true });
             }

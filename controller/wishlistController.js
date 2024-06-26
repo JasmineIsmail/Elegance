@@ -32,7 +32,7 @@ const addToWishlist = async(req,res)=>{
             const wish = await wishlist.save();
            
             if(wish){
-                res.redirect('/users/wishlist');
+                res.redirect('/wishlist');
             }
         }
     }catch(error){
@@ -61,7 +61,7 @@ const removeWishlist = async (req,res)=>{
     try{
         const id = req.query.id;
         await Wishlist.deleteOne({userName:req.session.user_id});
-        res.redirect('/users/wishlist');
+        res.redirect('/wishlist');
     }catch(error){
         console.log(error.message);
     }
@@ -84,13 +84,13 @@ const addFromWishlist = async (req,res)=>{
                     await Cart.updateOne({userName:userid,"products.productId":productId},{$inc:{"products.$.count":1}});
                     await Wishlist.updateOne({userName:userid},{$pull:{products:{productId:productId}}});
                     // res.json({success:true})
-                    res.redirect('/users/viewCart');
+                    res.redirect('/viewCart');
 
                 }else{
                     await Cart.findOneAndUpdate({userName:req.session.user_id},{$push:{products:{productId:productId,productPrice:productData.price}}});
                     await Wishlist.updateOne({userName:userid},{$pull:{products:{productId:productId}}});
                     // res.json({success:true})
-                    res.redirect('/users/viewCart');
+                    res.redirect('/viewCart');
                 }
             }else{
                 const cart = new Cart({
@@ -104,13 +104,13 @@ const addFromWishlist = async (req,res)=>{
                 const cartData = await cart.save();
                 if(cartData){
                     await Wishlist.updateOne({user:userid},{$pull:{products:{productId:productId}}});
-                    res.redirect('/users/viewCart');                   
+                    res.redirect('/viewCart');                   
                 }else{
-                    res.redirect('/users/login');
+                    res.redirect('/login');
                 }  
             }
         }else{
-            res.redirect('/users/login');
+            res.redirect('/login');
         }
     }catch(error){
         console.log(error.message);

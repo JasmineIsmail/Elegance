@@ -30,10 +30,6 @@ const addCategory = async(req,res)=>{
 // upload Category
 const loadAddCategory = async (req, res) => {
   try {
-    const existingCategory = await Categories.find({categoryName:req.body.categoryName});
-    console.log(req.body);
-    console.log(req.file);
-
     if(existingCategory.length > 0){
       console.log("hiiii");
       res.render('./admin/addCategory',{message:"Category already exist!!"});
@@ -46,7 +42,6 @@ const loadAddCategory = async (req, res) => {
         });
       const savedCategory = await categoryData.save();
     if (savedCategory) {
-      console.log("category saved");
       res.redirect("/admin/viewCategories");
     } else {
       console.log("error while uploading data of categories");

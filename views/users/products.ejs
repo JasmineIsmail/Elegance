@@ -6,13 +6,13 @@
         <div class="flex-w flex-sb-m p-b-52">
             <div class="flex-w flex-l-m filter-tope-group m-tb-10">
                 <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1">
-                    <a href="/users/products" style="text-decoration: none; color: black;">All Products</a>
+                    <a href="/products" style="text-decoration: none; color: black;">All Products</a>
                 </button>
                 <% categories.forEach(cat => {
                     const categoryRoute = cat.categoryName.toLowerCase();
                 %>
                     <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1">
-                        <a href="/users/products/<%= categoryRoute %>" style="text-decoration: none; color: black;">
+                        <a href="/products/<%= categoryRoute %>" style="text-decoration: none; color: black;">
                             <%= cat.categoryName %>
                         </a>
                     </button>
@@ -59,7 +59,7 @@
 
                     <div class="block2-txt flex-w flex-t p-t-14">
                         <div class="block2-txt-child1 flex-col-l ">
-                            <a href="/users/product_detail?product=<%= product.Name %>" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                            <a href="/product_detail?product=<%= product.Name %>" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                 <%= product.Name %>
                             </a>
 
@@ -69,7 +69,7 @@
                         </div>
 
                         <div class="block2-txt-child2 flex-r p-t-3">
-                            <a href="/users/addToWishlist?id=<%= product._id %>" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                            <a href="/addToWishlist?id=<%= product._id %>" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
                                 <img class="icon-heart1 dis-block trans-04" src="/public/assets/user_assets/images/icons/icon-heart-01.png" alt="ICON">
                                 <img class="icon-heart2 dis-block trans-04 ab-t-l" src="/public/assets/user_assets/images/icons/icon-heart-02.png" alt="ICON">
                             </a>

@@ -163,7 +163,6 @@ const sendVerifyMail = async(name,email,req,res)=>{
             otp:OTP
           });
           const otp_stored= await otpData.save();
-          console.log(" otp stored:",otp_stored);
           await otpverificationData.findOneAndUpdate({email:email},{$set:{otp:otp_stored.otp}});
         }
       })
@@ -210,8 +209,6 @@ const registerUser = async (req,res)=>{
 const insertUser= async (req,res)=>{
     try {
             const userExist = await User.findOne({email:req.body.email});
-            console.log(userExist);
-           console.log(req.body.email);
             if(userExist){
               res.send("user already exist with this email id");
               console.log("user already exist with this email id")
@@ -220,7 +217,6 @@ const insertUser= async (req,res)=>{
                 
                 console.log(req.body.password);
                 const spassword = await securePassword(req.body.password);
-                console.log(spassword);
                 const user = new User({
                     
                     name :req.body.name,
@@ -229,7 +225,6 @@ const insertUser= async (req,res)=>{
                     password :spassword,
                     isAdmin :false
                 })
-                console.log("db add check");
                 const userData=await user.save();
                 req.session.email=userData.email;
                 
@@ -245,15 +240,11 @@ const checkOTP = async(req,res)=>{
     try { 
         const otpReceived =await  req.body.OTP;
         const userEmail = req.session.email;
-        console.log("user email :",userEmail);
         const otp = await otpverificationData.findOne({email:userEmail});
         const userData = await User.findOne({email:userEmail});
-        console.log(userData);
-        console.log(otpReceived);
-        console.log("otp :",otp);
         if(otpReceived===otp.otp){
           req.session.user_id = userData._id; // session keeping.
-          res.redirect("/users/home");
+          res.redirect("/home");
           const updateInfo= await User.updateOne({email:userEmail},{$set:{isVerified:true}});
         }
         else{
@@ -280,10 +271,7 @@ const loginVerification = async (req, res) => {
             req.session.user_id = userData._id; // session keeping.
              let userId = req.session.user_id;
             
-             res.redirect("/users/home");
-            //sendVerifyMail(existingUser.name,req.body.email);
-            
-            //res.render("./users/otpVerify");
+             res.redirect("/home");
           } else {
             res.render("./users/login", { message: "invalid email or password" });
           }
@@ -329,9 +317,8 @@ const loginVerification = async (req, res) => {
 }
 const updateProfile = async(req,res)=>{
   try {
-    console.log("update profile");
       const user = await User.findOneAndUpdate({_id:req.query.id},{$set:{name:req.body.name,email:req.body.email,mobile:req.body.mobile}});
-      res.redirect('/users/user_profile');
+      res.redirect('/user_profile');
   } catch (error) {
     console.error(error);
   }
@@ -349,9 +336,8 @@ const manageAddress = async(req,res)=>{
 const deleteAddress = async (req,res)=>{
   try {
     const addressId= req.query.id;
-    console.log(addressId);
     await Address.updateOne({userId:req.session.user_id},{$pull:{addresses:{_id:addressId}}});
-    res.redirect('/users/manage_address');
+    res.redirect('/manage_address');
   } catch (error) {
     console.error(error);
   }
@@ -384,7 +370,7 @@ try {
 const logOut = async (req, res) => {
   try {
     req.session.destroy();
-    res.redirect("/users/login");
+    res.redirect("/login");
   } catch (error) {
     console.error("Error occurred while Logout ", error);
     res.status(500).send("Error occurred while Logout.");
@@ -419,7 +405,6 @@ const loadWallet = async(req,res)=>{
     if(!user)
       return res.status(404).json({message:"No such user found"}) ;
       const walletTransaction=[...user.walletTransactions];
-      console.log(walletTransaction);
       walletTransaction.sort((a,b)=>{
         return new Date(b.date) - new Date(a.date);
       })

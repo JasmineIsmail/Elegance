@@ -12,35 +12,35 @@
       
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/user_profile">
+        <a class="nav-link collapsed" href="/user_profile">
           <span><strong>Profile</strong> </span>
         </a>
       </li><!-- End users Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/manage_address">
+        <a class="nav-link collapsed" href="/manage_address">
           <span><strong>Manage Address</strong> </span>
         </a>
       </li><!-- End products Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/orders">
+        <a class="nav-link collapsed" href="/orders">
           <span><strong>Orders</strong></span>
         </a>
       </li><!-- End Category Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/wallet">
+        <a class="nav-link collapsed" href="/wallet">
           <span><strong>Wallet</strong></span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/change_password">
+        <a class="nav-link collapsed" href="/change_password">
           <span><strong>Change Password</strong></span>
         </a>
       </li><!-- End Register Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/logout">
+        <a class="nav-link collapsed" href="/logout">
           <span><strong>Logout</strong></span>
         </a>
       </li><!-- End Login Page Nav -->
@@ -77,7 +77,7 @@
                                    <br>
                                    <%=address[i].alternativeMob%>
                                    <br>
-                                   <a href="/users/edit_address?id=<%=address[i]._id%>">Edit</a>
+                                   <a href="/edit_address?id=<%=address[i]._id%>">Edit</a>
                                    <a href="#" onclick="confirmDelete('<%=address[i]._id %>')">Remove</a>
                                   </li>
                                 </div>
@@ -86,7 +86,7 @@
                             </div>
                            <% } %>
                     </ul>
-                    <a href="/users/add_address">Add address</a>
+                    <a href="/add_address">Add address</a>
         </div>
     </div>
 </main>
@@ -96,7 +96,7 @@
         var confirmation = confirm("Are you sure you want to remove this address");
         if (confirmation) {
             // If the user clicks OK in the confirmation dialog, redirect to the deleteItem URL
-            window.location.href = "/users/delete_address?id=" + address;
+            window.location.href = "/delete_address?id=" + address;
         } 
     }
 </script>

@@ -146,9 +146,7 @@ const deleteCoupon = async (req,res)=>{
 const viewCoupon=async(req,res)=>{
     try {
         const couponId = req.query.id;
-        console.log(couponId);
         const couponDetails= await Coupon.findById({_id:couponId});
-        console.log(couponDetails);
         res.render('./admin/viewCoupon',{coupon:couponDetails});
     } catch (error) {
         console.error(error);
@@ -169,7 +167,6 @@ const updateCoupon = async(req,res)=>{
     try {
         const couponId=req.query.id;
         const updates = req.body;
-        console.log(updates);
         let coupon = await Coupon.findById(couponId);
            
             const status = (req.body.status== "true")?true:false;

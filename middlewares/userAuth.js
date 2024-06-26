@@ -12,7 +12,7 @@ const isLogin = async (req, res, next) => {
       res.json("Accedd denied your account is blocked!");
     }
   } else {
-    res.redirect("/users/login");
+    res.redirect("/login");
   }
 };
 
@@ -22,7 +22,7 @@ const isLogin = async (req, res, next) => {
 // Middleware if user is logout
 const isLogout = async (req, res, next) => {
   if (req.session.user_id) {
-    res.redirect("/users/home");
+    res.redirect("/home");
   }
   next();
 };

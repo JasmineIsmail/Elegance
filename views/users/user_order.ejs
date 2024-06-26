@@ -11,35 +11,35 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/user_profile">
+        <a class="nav-link collapsed" href="/user_profile">
           <span><strong>Profile</strong> </span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/manage_address">
+        <a class="nav-link collapsed" href="/manage_address">
           <span><strong>Manage Address</strong> </span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/orders">
+        <a class="nav-link collapsed" href="/orders">
           <span><strong>Orders</strong></span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/wallet">
+        <a class="nav-link collapsed" href="/wallet">
           <span><strong>Wallet</strong></span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/change_password">
+        <a class="nav-link collapsed" href="/change_password">
           <span><strong>Change Password</strong></span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/logout">
+        <a class="nav-link collapsed" href="/logout">
           <span><strong>Logout</strong></span>
         </a>
       </li>
@@ -57,9 +57,9 @@
                    <img src="/public/uploads/<%=product.productId.images[0]%>" class="img-fluid rounded-start" alt="<%=product.productId.Name%>">
                    <p class="card-text text-secondary ml-5"> Product status :<%= product.status %></p>
                     <% if(!(product.status == "Cancelled" || product.status =='Delivered' || product.status== "Returned")){%>
-                      <a href="/users/cancelOrder/<%=order.order_Id %>?id=<%=product.productId._id%>" style="text-decoration:none ;"><p class="text-secondary ml-5">Cancel Product Order</p></a>
+                      <a href="/cancelOrder/<%=order.order_Id %>?id=<%=product.productId._id%>" style="text-decoration:none ;"><p class="text-secondary ml-5">Cancel Product Order</p></a>
                     <%} else if(product.status == "Delivered" ){%>
-                     <a href="/users/returnOrder/<%=order.order_Id %>?id=<%=product.productId._id%>"  style="text-decoration:none ;"><p class="text-secondary ml-5">Return</p></a>
+                     <a href="/returnOrder/<%=order.order_Id %>?id=<%=product.productId._id%>"  style="text-decoration:none ;"><p class="text-secondary ml-5">Return</p></a>
                      <%}%>
                 </div>
                 <div class="col-md-8">
@@ -135,14 +135,11 @@
 </style>
 <script>
 function continuePayment(order_Id){
-  console.log("hello");
-  console.log(order_Id);
   $.ajax ({
-    url : '/users/continuePayment',
+    url : '/continuePayment',
     method:"post",
     data:{order_Id},
     success:(response) =>{
-      console.log(response);
       if(response.success == true){
         razorPayment(response.order)
       }
@@ -180,7 +177,7 @@ var rzp1 = new Razorpay(options);
 }
 function verifyPayment(payment,order){
             $.ajax({
-                url:'/users/verifyPayment',
+                url:'/verifyPayment',
                 method:'post',
                 data:{
                     payment,
@@ -189,7 +186,7 @@ function verifyPayment(payment,order){
                 success:(response) => {
                   console.log("after verify payment: ",response);
                     if (response.success) {
-                        window.location.href = '/users/orders';
+                        window.location.href = '/orders';
                     } else {
                         alert('Payment Failed');
                     }
@@ -197,7 +194,7 @@ function verifyPayment(payment,order){
             })
         }
       function downloadInvoice(orderId) {
-      const url = `http://localhost:3000/users/invoice?id=${orderId}`;
+      const url = `http://elegancefashion.shop/invoice?id=${orderId}`;
       const link = document.createElement("a");
       link.href = url;
       link.download = "invoice.pdf";

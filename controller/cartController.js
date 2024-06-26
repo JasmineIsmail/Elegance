@@ -61,7 +61,7 @@ const loadCart = async (req,res)=>{
                 }
             }
         }else{
-         res.redirect('/users/login');   
+         res.redirect('/login');   
         }
     } catch (error) {
         console.error(error);
@@ -95,7 +95,6 @@ const addToCart = async (req,res)=>{
         req.session.productId=productId;
         const productData = await Product.findOne({_id:productId});
         productData.offerPrice=  Math.floor(await checkAllOffer(productData));
-        console.log("offer price=",productData.offerPrice);
         const userId = req.session.user_id;
         const user = await User.findOne({_id:userId});
         if(user){
@@ -105,12 +104,7 @@ const addToCart = async (req,res)=>{
                     const productExist = cartData.products.findIndex((product)=>productId === product.productId.toString());
                     
                     if(productExist !== -1){
-                        // if(productData.price != productData.offerPrice){
-                        //     productData.discount= productData.price-productData.offerPrice;
-                        // }
                         await Cart.updateOne({userName:user._id,'products.productId':productData._id},{$inc:{'products.$.count':1}});
-                       // if(cartData.products[productExist].productId._id===productId && productCount !== cartData.products[productExist].count)
-                            //await Cart.updateOne({userName:user._id,'products.productId':productData._id},{$set:{'products.$.count':productCount}});
                     }else{
                         //const priceUpdate= productData.price+cartData.totalPrice;
                         await Cart.findOneAndUpdate(
@@ -139,9 +133,9 @@ const addToCart = async (req,res)=>{
             }else{
                 res.json({stockOut: true});
             }
-        res.redirect('/users/viewCart');
+        res.redirect('/viewCart');
         }else{
-            res.redirect('/users/login');
+            res.redirect('/login');
         }
     } catch (error) {
         console.error(error);   
@@ -166,7 +160,7 @@ const deleteItem =  async (req,res) =>{
    
         await Cart.updateOne({userName:user},{$pull:{products:{productId}}});
         await Cart.updateOne({ userName: user },{ $set: { totalPrice: updatedPrice } });
-        res.redirect('/users/viewCart');
+        res.redirect('/viewCart');
     } catch (error) {
         console.log(error.message);
         res.send("error in deleting product");

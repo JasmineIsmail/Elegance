@@ -7,35 +7,35 @@
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/user_profile">
+        <a class="nav-link collapsed" href="/user_profile">
           <span><strong>Profile</strong> </span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/manage_address">
+        <a class="nav-link collapsed" href="/manage_address">
           <span><strong>Manage Address</strong> </span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/orders">
+        <a class="nav-link collapsed" href="/orders">
           <span><strong>Orders</strong></span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/wallet">
+        <a class="nav-link collapsed" href="/wallet">
           <span><strong>Wallet</strong></span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/change_password">
+        <a class="nav-link collapsed" href="/change_password">
           <span><strong>Change Password</strong></span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/users/logout">
+        <a class="nav-link collapsed" href="/logout">
           <span><strong>Logout</strong></span>
         </a>
       </li>
@@ -49,7 +49,7 @@
             <h5> Are you not satisfied with our product ?</h5>
         </div>
         <div class="row">
-          <form method="post" action="/users/returnOrder/<%=orderId%>?id=<%=product._id%>">
+          <form method="post" action="/returnOrder/<%=orderId%>?id=<%=product._id%>">
             <div  style="display: flex;">
                <image src="/public/uploads/<%=product.images[0]%>" width="80em" height="80em"></image>  
             </div>

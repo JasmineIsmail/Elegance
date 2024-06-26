@@ -31,7 +31,7 @@ const checkout = async(req,res)=>{
             const userAddress = addressData.addresses;
             res.render('./users/checkout',{userAddress,productData,products,cartData,coupons,totalDiscount,reducedAmount,total}); 
         }else{
-            res.redirect('/users/add_address');}
+            res.redirect('/add_address');}
     } catch (error) {
         console.error(error);
     }
@@ -104,7 +104,7 @@ const saveAddress = async(req,res)=>{
             });
             const addressSaved = await addressDetails.save();
         }
-            res.redirect('/users/checkout');
+            res.redirect('/checkout');
     } catch (error) {
         console.error(error);
     }
@@ -112,8 +112,6 @@ const saveAddress = async(req,res)=>{
 const editAddress = async(req,res)=>{
     try {
         const addressId= req.query.id;
-        console.log(addressId);
-        console.log(req.session.user_id);
         const addressData = await Address.findOne({userId:req.session.user_id}); 
         const selectedAddress = addressData.addresses.find(address => String(address._id) === addressId);
         res.render('./users/editAddress',{selectedAddress});
@@ -125,9 +123,7 @@ const changeAddress = async(req,res)=>{
     try{
         const addressId = req.query.id;
         const addressData = await Address.findOne({userId:req.session.user_id});
-        console.log(addressData);
         const addressIndex = addressData.addresses.findIndex(address=>address._id==addressId);
-        console.log(addressIndex);
         if(addressIndex!== -1){
             addressData.addresses[addressIndex].name=req.body.name;
             addressData.addresses[addressIndex].mobile=req.body.mobile;
@@ -139,7 +135,7 @@ const changeAddress = async(req,res)=>{
             addressData.addresses[addressIndex].State=req.body.State;
             addressData.addresses[addressIndex].pin=req.body.pin;
             await addressData.save();
-            res.redirect('/users/user_profile');
+            res.redirect('/user_profile');
         }else{
             res.send('address not found');
         }

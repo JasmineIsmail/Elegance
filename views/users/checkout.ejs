@@ -28,7 +28,7 @@
                                 <%=userAddress[i].alternativeMob %>
               </label>
             <%}%>
-            <a href="/users/add_address" class="card-link" id="new_address">Add address</a>
+            <a href="/add_address" class="card-link" id="new_address">Add address</a>
       </div>
     </div>
   </div>
@@ -190,7 +190,7 @@ modalBody.addEventListener('change', function(event) {
         const discountedTotal= $("#total").text().trim();
         console.log("amount :",amount);
         $.ajax({
-    url:"/users/applyCoupon",
+    url:"/applyCoupon",
     method:"post",
     data:{
       code:couponValue,
@@ -281,7 +281,7 @@ modalBody.addEventListener('change', function(event) {
             }
 
               $.ajax({
-                url:'/users/createOrder',
+                url:'/createOrder',
                 method:'post',
                 data:{
                     selectedAddress,
@@ -308,7 +308,7 @@ modalBody.addEventListener('change', function(event) {
                         icon: "success",
                         title:" Order placed successfully."
                       });
-                      window.location.href = '/users/orders';
+                      window.location.href = '/orders';
                     }else if(response.onlinePayment === true){
                         razorPayment(response.order)
                     }
@@ -322,7 +322,7 @@ modalBody.addEventListener('change', function(event) {
                         icon: "success",
                         title:" Order placed successfully."
                       });
-                      window.location.href = '/users/orders';
+                      window.location.href = '/orders';
                     }
                        
                 }
@@ -364,7 +364,7 @@ var rzp1 = new Razorpay(options);
 rzp1.on('payment.failed', function (response){
   console.log("receipt",order.receipt);
     $.ajax({
-          url : '/users/paymentFail',
+          url : '/paymentFail',
           method: 'post',
           data :{ orderId : order.receipt},
           success :(response) =>{
@@ -374,7 +374,6 @@ rzp1.on('payment.failed', function (response){
                 icon: "warning",
                 title:" Order not placed, payment failed."
               });
-              //window.location.href = '/users/orders';
             }
           }
         })
@@ -382,7 +381,7 @@ rzp1.on('payment.failed', function (response){
 }              
 function verifyPayment(payment,order){
             $.ajax({
-                url:'/users/verifyPayment',
+                url:'/verifyPayment',
                 method:'post',
                 data:{
                     payment,
@@ -395,7 +394,7 @@ function verifyPayment(payment,order){
                         icon: "success",
                         title:" Order placed successfully."
                       });
-                      window.location.href = '/users/orders';
+                      window.location.href = '/orders';
                     } else {
                         alert('Payment Failed');
                     }
@@ -409,7 +408,7 @@ document.getElementById("removeCoupon").addEventListener('click',function(){
     const couponValue= document.getElementById('coupon').value.trim();
     const actualPrice= document.getElementById('totalPrice').textContent.trim();
     $.ajax({
-      url:'/users/removeCoupon',
+      url:'/removeCoupon',
       method:"post",
       data:{ couponValue: couponValue },
       success:(response)=>{

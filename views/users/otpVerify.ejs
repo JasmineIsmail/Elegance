@@ -57,14 +57,14 @@
                     <p class="text-center small">Enter the OTP in your email to verify </p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate action="/users/verify" method="post">
+                  <form class="row g-3 needs-validation" novalidate action="/verify" method="post">
 
                     <div class="col-12">
                       <label for="OTP" class="form-label">OTP</label>
                       <input type="password" name="OTP" class="form-control" id="OTP" required>
                       <div class="invalid-feedback">Please enter the correct OTP</div>
                       <p class="small fst-italic">The otp is valid upto: <span id="timerId"></span></p>
-                      <a id='resendLink' href="/users/resendOTP">Resend OTP</a>
+                      <a id='resendLink' href="/resendOTP">Resend OTP</a>
                     </div>
 
                     
@@ -125,7 +125,7 @@ function run_clock(id,endtime){
    
 		if(t.minutes<=0 && t.seconds <=0){ 
       clearInterval(timeinterval);
-      resendLink.href = '/users/resendOTP';
+      resendLink.href = '/resendOTP';
     }else {
         // Disable the "Resend OTP" link
         resendLink.removeAttribute('href');
