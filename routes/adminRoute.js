@@ -30,7 +30,7 @@ adminRoute.use((req, res, next) => {
 });
 
 
-adminRoute.get('/login',adminAuth.isLogout,adminController.loadLogin);
+adminRoute.get('/',adminAuth.isLogout,adminController.loadLogin);
 adminRoute.get('/resendOTP',adminAuth.isLogout,adminController.resendOtp);
 adminRoute.get('/dashboard',adminAuth.isLogin,adminController.getDashboard);
 //adminRoute.get('/register',adminController.registerAdmin);

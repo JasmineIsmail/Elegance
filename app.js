@@ -23,7 +23,7 @@ connectDB();
 
 
 app.use('/admin',adminRoute);
-app.use('/users',userRoute);
+app.use('/',userRoute);
 
 
 

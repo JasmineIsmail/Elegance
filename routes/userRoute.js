@@ -30,7 +30,7 @@ userRoute.use((req, res, next) => {
     next();
 });
 
-
+userRoute.get('/',userController.loadHome);
 userRoute.get('/login',userAuth.isLogout,userController.loadLogin);
 userRoute.get('/register',userController.registerUser);
 userRoute.get('/resendOTP',userAuth.isLogout,userController.resendOtp);
