@@ -512,7 +512,7 @@ const getExcelReport = async (req, res) => {
 const logout = async(req,res)=>{
     try {
         req.session.destroy();
-        res.redirect("/admin/login");
+        res.redirect("/admin");
     } catch (error) {
         console.error("Error occurred while Logout ", error);
         res.status(500).send("Error occurred while Logout.");

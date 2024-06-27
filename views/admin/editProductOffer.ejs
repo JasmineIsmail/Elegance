@@ -27,13 +27,13 @@
                 <div class="row mb-4 mt-3">
                   <label for="startDate" class="col-sm-2 col-form-label">Valid from</label>
                   <div class="col-sm-10">
-                    <input class="form-control" type="date" id="startDate" name="startDate" value="<%= productOffer.startDate%>">
+                    <input class="form-control" type="date" id="startDate" name="startDate" value="<%= productOffer.startDate.toISOString().slice(0,10)%>">
                   </div>
                 </div>
                 <div class="row mb-4 mt-3">
                     <label for="expiryDate" class="col-sm-2 col-form-label">Expiry Date</label>
                     <div class="col-sm-10">
-                      <input class="form-control" type="date" name="expiryDate" value="<%=productOffer.endDate%>">
+                      <input class="form-control" type="date" name="expiryDate" value="<%=productOffer.endDate.toISOString().slice(0,10%)%>">
                     </div>
                 </div>
                 <div class="row mb-4 mt-3">
