@@ -194,7 +194,7 @@ function verifyPayment(payment,order){
             })
         }
       function downloadInvoice(orderId) {
-      const url = `http://elegancefashion.shop/invoice?id=${orderId}`;
+      const url = `https://elegancefashion.shop/invoice?id=${orderId}`;
       const link = document.createElement("a");
       link.href = url;
       link.download = "invoice.pdf";
