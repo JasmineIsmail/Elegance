@@ -1,0 +1,122 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Product Offers</h1>
+     </div><!-- End Page Title -->
+
+
+<section class="section">
+    <div class="row">
+      <div class="">
+        <form action="">
+          <input type="text" name="search" id="search">
+          <input class="btn btn-info" type="submit" value='search'>
+        </form>
+        <button type="button" class="btn btn-info" style="margin-left: 80%;margin-bottom: 5%;float:left"><a style="color: black" href="/admin/addproductOffer">Add Product Offer</a></button>
+
+      </div>
+      <div class="col-lg-12">
+       
+        <div class="card">
+          <div class="card-body">
+           
+            <!-- Table with stripped rows -->
+            <table class="table datatable">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Offer</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Expiry</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+               
+                 <% if(productOffers.length>0) {
+                  for(let i=0;i<productOffers.length;i++){ %>
+                    <tr>
+                    <td><%= i+1 %></td>
+                    <td><%= productOffers[i].name %></td>
+                    <td><%= productOffers[i].status %></td>
+                    <td><%= productOffers[i].endDate.toLocaleDateString() %></td>
+                    <td>
+                      <button type="button" class="btn btn-info"> <a href="/admin/viewProductOffer?id=<%=productOffers[i]._id%>" style="color:black">view</a></button>
+                      <button type="button" class="btn btn-info"><a href="/admin/editProductOffer?id=<%=productOffers[i]._id%>" style="color:black">Edit</a> </button>
+                      <button type="button" class="btn btn-info" onclick="confirmDelete('<%=productOffers[i]._id%>')" style="color:black">Delete </button>
+                    </td>
+                    </tr>
+                  <%}
+                 }%>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="pagination">
+          <% 
+            const pagesPerGroup = 4; // Number of pages per group
+            const currentPageGroup = Math.ceil(currentPage / pagesPerGroup); // Current page group
+            const startPage = (currentPageGroup - 1) * pagesPerGroup + 1; // Starting page of the current group
+            const endPage = Math.min(totalPages, currentPageGroup * pagesPerGroup); // Ending page of the current group
+            const previousGroupPage = startPage - 1; // The page before the current group
+            const nextGroupPage = endPage + 1; // The first page of the next group
+          %>
+          <% if (previousGroupPage > 0) { %>
+            <a href="?page=<%=previousGroupPage%>" ><button type="button" class="btn btn-light">Previous</button></a>
+          <% } %>
+
+          <% for(let i =startPage; i <= endPage; i++) { %>
+            <a href="?page=<%= i %>" <%= i === currentPage ? 'class="active"' : '' %>><button type="button" class="btn btn-light"><%= i %></button></a>
+          <% } %>
+
+          <% if (nextGroupPage <= totalPages) { %>
+            <a href="?page=<%= nextGroupPage %>"><button type="button" class="btn btn-light">Next</button></a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </section>
+  <style>
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  color: #fcfcfc;
+  padding: 8px 12px;
+  text-decoration: none;
+  margin: 0 4px;
+}
+
+.pagination a.active {
+  background-color: #f5f5f5;
+  color: #fff;
+  border-color: #ffffff;
+}
+</style>
+ <script>
+  function confirmDelete(offerId){
+    swal({
+  title: "Are you sure?",
+  text: "You want to delete this offer!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    window.location.href ="/admin/deleteProductOffer?id=" +offerId;
+    swal("The offer has been deleted!", {
+      icon: "success",
+    });
+  } 
+});
+  }
+  
+  </script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<% - include("../partials/adminpartials/footer.ejs") %>

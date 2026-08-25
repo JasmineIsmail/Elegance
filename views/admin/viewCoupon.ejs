@@ -1,0 +1,96 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1> Coupon Details</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Coupon</li>
+          <li class="breadcrumb-item active">Details</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+        
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  <h5 class="card-title">Coupon Details</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Coupon Code</div>
+                    <div class="col-lg-9 col-md-8"><%= coupon.code %></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Description</div>
+                    <div class="col-lg-9 col-md-8"><%= coupon.description %></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Valid from</div>
+                    <div class="col-lg-9 col-md-8"><%= coupon.startDate%></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Expiry date</div>
+                    <div class="col-lg-9 col-md-8"><%= coupon.expiryDate %></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Discount type</div>
+                    <div class="col-lg-9 col-md-8"><%= coupon.discountType %></div>
+                  </div>
+                  <% if (coupon.discountType == "fixed rate"){%>
+                    <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Discount Amount</div>
+                    <div class="col-lg-9 col-md-8"><%= coupon.discountAmount %></div>
+                  </div>
+                  <%}%>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Maximum cart amount</div>
+                    <div class="col-lg-9 col-md-8"><%= coupon.maxCartAmount %></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Maximum discount amount</div>
+                    <div class="col-lg-9 col-md-8"><%= coupon.maxDiscountAmount %></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Maximum users</div>
+                    <div class="col-lg-9 col-md-8"><%= coupon.maxUsers %></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Coupon availed users </div>
+                    <%coupon.user.forEach((customer)=>{%>
+                    <div class="col-lg-9 col-md-8"><%= customer %> </div>
+                    <%})%>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Status</div>
+                    <div class="col-lg-9 col-md-8"><%=coupon.status%></div>
+                  </div>
+
+                  
+                </div>
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  
+ 
+<%- include("../partials/adminpartials/footer.ejs") %>

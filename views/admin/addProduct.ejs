@@ -1,0 +1,226 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Add Product</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-10" >
+        <div class="card">
+            <div class="card-body">
+              <form id="uploadForm" class="row g-3 needs-validation" novalidate action="/admin/upload_product" method="post" enctype="multipart/form-data" >
+                <div class="row mb-4 mt-4">
+                  <label for="Name" class="col-sm-2 col-form-label">Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="Name" class="form-control" value="<%=values.Name? values.Name : '' %>" required>
+                    <% if (error && error.Name) { %>
+                      <span class="text-danger"><%= error.Name %></span>
+                    <% }else if(error && error.nameLength){%>
+                      <span class="text-danger"><%= error.nameLength %></span>
+                    <%} %>
+                  </div> 
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="images" class="col-sm-2 col-form-label">Images</label>
+                  <div class="col-sm-10">
+                    <input id="productImage" class="form-control" type="file" name="images" accept="image/*" multiple required>
+                    <div id="preview" style="display: none;">
+                  </div>
+                    <button id="crop-btn"  class="btn btn-success mt-2"  type="button" style="display: none;">Crop</button>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="description" class="col-sm-2 col-form-label" name="description">Description</label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" name="description"  style="height: 100px" required><%= values ? values.description: '' %></textarea>
+                    <% if (error && error.description) { %>
+                      <span class="text-danger"><%= error.description %></span>
+                    <% }else if(error && error.descriptionLength){%>
+                      <span class="text-danger"><%= error.descriptionLength %></span>
+                    <%} %>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="price" class="col-sm-2 col-form-label">Price</label>
+                  <div class="col-sm-10">
+                    <input type="number" name="price" class="form-control" value="<%= values ? values.price : '' %>" required>
+                    <% if (error && error.price) { %>
+                      <span class="text-danger"><%= error.price %></span>
+                    <% }%>
+                    <%if(error && error.negativePrice){%>
+                      <span class="text-danger"><%= error.negativePrice %></span>
+                    <%} %>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                  <label for="category" class="col-sm-2 col-form-label" name="category">category</label>
+                    <div class="col-sm-10">
+                      <select name="category" class="form-control" required>
+                        <option>select</option>
+                        <% for(let i=0;i<category.length;i++){%>
+                          <option value="<%=category[i].categoryName%>" ><%=category[i].categoryName%></option>
+                          
+                        <%}%>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-4 mt-3">
+                  <label for="category" class="col-sm-2 col-form-label">Quantity</label>
+                  <div class="col-sm-10">
+                    <input type="number" name="quantity" class="form-control" value="<%= values ? values.quantity: '' %>" required>
+                    <% if (error && error.quantity) { %>
+                      <span class="text-danger"><%= error.quantity %></span>
+                    <% } 
+                    if(error && error.negativeQuantity){%>
+                      <span class="text-danger"><%= error.negativeQuantity %></span>
+                    <%} %>
+                  </div>
+                </div>
+                <div class="row mb-4 mt-3">
+                 <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+          </form>
+
+            </div>
+          </div>
+
+        </div>
+<%- include("../partials/adminpartials/footer.ejs") %>
+<style>
+  #preview {
+      margin-top: 20px; 
+      margin-left: 5px;
+  }
+  #preview img{
+    margin-right: 10px;
+    margin-bottom:  10px;
+    display: inline-block;
+    max-width: 100%;
+    cursor: pointer;
+  }
+</style>
+<link 
+rel="stylesheet" 
+href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"
+/>
+
+<script 
+src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js">
+</script>
+<script>
+
+let cropper;
+let currentImage = null;
+let selectedFiles = [];
+const input = document.getElementById("productImage");
+const preview = document.getElementById("preview");
+const cropBtn = document.getElementById("crop-btn");
+
+// Select images
+input.addEventListener("change", function(e){
+  const newFiles = Array.from(e.target.files);
+    selectedFiles = [
+      ...selectedFiles,
+      ...newFiles
+    ];
+  updateInputFiles();
+  previewImages();
+});
+// Show preview
+function previewImages(){
+  preview.innerHTML = "";
+  selectedFiles.forEach((file,index)=>{
+    const reader = new FileReader();
+    reader.onload = function(event){
+      const container = document.createElement("div");
+      container.style.display="inline-block";
+      container.style.margin="10px";
+      container.style.textAlign="center";
+      const img = document.createElement("img");
+      img.src = event.target.result;
+      img.width = 200;
+      img.style.cursor="pointer";
+      img.file = file;
+
+      // Click image for crop
+        img.onclick=function(){
+          if(cropper){
+            cropper.destroy();
+          }
+          currentImage = this;
+          cropper = new Cropper(this,{
+            aspectRatio:1,
+            viewMode:1
+          });
+          cropBtn.style.display="block";
+        };
+        // Delete button
+          const deleteBtn = document.createElement("button");
+          deleteBtn.innerText="Delete";
+          deleteBtn.type="button";
+          deleteBtn.className="btn btn-danger btn-sm d-block mt-2";
+          deleteBtn.onclick=function(){
+            if(cropper && currentImage === img){
+              cropper.destroy();
+              cropper=null;
+              cropBtn.style.display="none";
+            }
+            selectedFiles.splice(index,1);
+            updateInputFiles();
+            previewImages();
+          };
+          container.appendChild(img);
+          container.appendChild(deleteBtn);
+          preview.appendChild(container);
+      };
+      reader.readAsDataURL(file);
+    });
+    preview.style.display="block";
+  }
+// Crop button
+cropBtn.addEventListener("click",function(){
+    if(!cropper){
+        alert("Select an image first");
+        return;
+    }
+    cropper.getCroppedCanvas({
+        width:500,
+        height:500
+    })
+    .toBlob(function(blob){
+        const file = new File(
+            [blob],
+            currentImage.file.name,
+            {
+                type:"image/jpeg"
+            }
+        );
+      // Replace old image with cropped image
+        const index = selectedFiles.indexOf(currentImage.file);
+            if(index !== -1){
+                selectedFiles[index] = file;
+            }
+        currentImage.src = URL.createObjectURL(blob);
+        currentImage.file = file;
+        updateInputFiles();
+        cropper.destroy();
+        cropper=null;
+        cropBtn.style.display="none";
+    });
+});
+// Update actual input files
+function updateInputFiles(){
+    const dataTransfer = new DataTransfer();
+    selectedFiles.forEach(file=>{
+        dataTransfer.items.add(file);
+    });
+    input.files = dataTransfer.files;
+}
+
+
+</script>

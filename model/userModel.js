@@ -1,0 +1,56 @@
+const mongoose=require("mongoose");
+
+const userSchema = mongoose.Schema(
+    {
+        name:{
+        type:String,
+        required:true
+        },
+        email:{
+            type:String,
+            required:true,
+            unique:true
+        },
+        mobile:{
+            type:Number,
+            required:true
+        },
+        image:{
+            type:String
+        },
+        password:{
+            type:String,
+            required:true
+        },
+        isAdmin:{
+            type:Boolean,
+            default:false,
+            required:true
+        },
+        isVerified:{
+            type:Boolean,
+            default:false
+        },
+        isActive:{
+            type:Boolean,
+            default:true
+        },
+        wallet:{
+            type:Number,
+            default:0
+        },
+        walletTransactions:[
+            {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'WalletTransactions'
+          }],
+        createdAt:{
+            type:Date,
+            default:Date.now
+        },
+        updatedAt:{
+            type:Date,
+            default:Date.now
+        }
+})
+module.exports = mongoose.model("User",userSchema);

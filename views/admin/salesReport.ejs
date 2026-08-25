@@ -1,0 +1,76 @@
+<%- include("../partials/adminpartials/header.ejs") %>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Sales Report</h1>
+     </div><!-- End Page Title -->
+
+
+<section class="section">
+    <div class="row">
+      <div class="">
+        <form action="">
+          <input type="text" name="search" id="search">
+          <input class="btn btn-info" type="submit" value='search'>
+        </form>
+      </div>
+      
+        <div class="col-md-6 text-right">
+          <form action="/admin/downloadPdf" method="post" style="display: inline-flex;margin: 1em;">
+              <input type="hidden" name="fromDate" value="<%= fromDate.toISOString() %>">
+              <input type="hidden" name="toDate" value="<%= toDate.toISOString() %>">
+              <button type="submit"  class = "btn btn-info">Download Pdf Report</button>
+          </form>
+          <form action="/admin/downloadExcel" method="post" style="display: inline-block;margin: 1em;">
+              <input type="hidden" name="fromDate" value="<%= fromDate.toISOString() %>">
+              <input type="hidden" name="toDate" value="<%= toDate.toISOString() %>">
+              <button type="submit"  class = "btn btn-info">Download Excel Report</button>
+          </form>
+      </div>
+      
+      <div class="col-lg-12">
+       
+        <div class="card">
+          <div class="card-body">
+           
+            <!-- Table with stripped rows -->
+            <table class="table datatable">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  
+                  <th scope="col">Date</th>
+                  <th scope="col">Product</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Payment Method</th>
+                  <th scope="col">Total Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+               
+                 <% if(salesData.length>0) {
+                  salesData.forEach((sale,index)=>{%>
+                    <tr>
+                    <td><%= index+1 %></td>
+                    <td> <%=sale.date.toLocaleDateString() %> </td>
+                    <%sale.products.forEach((pdt)=>{%>
+                        <td><%= pdt.productId.Name%></td>  
+                        <td><%= pdt.count %></td> 
+                        <td><%= pdt.productPrice %></td>
+                    <%})%>
+                    <td><%= sale.paymentMethod %></td>
+                    <td><%= sale.Amount %></td>
+                    </tr>
+                  <%})
+                }%>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+<% - include("../partials/adminpartials/footer.ejs") %>
