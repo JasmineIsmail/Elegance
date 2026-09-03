@@ -87,6 +87,5 @@ adminRoute.post('/addCategoryOffer',adminAuth.isLogin,offerController.addCategor
 adminRoute.post('/editCategoryOffer',adminAuth.isLogin,offerController.updateCategoryOffer);
 adminRoute.post('/addProductOffer',adminAuth.isLogin,offerController.addProductOffer);
 adminRoute.post('/editProductOffer',adminAuth.isLogin,offerController.updateProductOffer);
-//adminRoute.post('/addRefferalOffer',adminAuth.isLogin,offerController.addRefferalOffer);
 adminRoute.post('/replaceImg',adminAuth.isLogin,upload.single('newPic'),productController.imageReplace);
 module.exports=adminRoute;

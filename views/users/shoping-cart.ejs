@@ -69,7 +69,7 @@
                                             <div class="how-itemcart1">
 
                                                 <img
-                                                    src="/public/uploads/<%= cartImages[i] %>"
+                                                    src="<%= cartImages[i].startsWith('http')? cartImages[i]: '/public/uploads/' + cartImages[i]%>"
                                                     alt="IMG"
                                                 >
 

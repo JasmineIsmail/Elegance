@@ -32,7 +32,9 @@
                                     <td class="column-1"><%=products[i].productId.Name %></td>
                                     <td class="column-1">
                                         <div class="how-itemcart1">
-                                            <img src="/public/uploads/<%=products[i].productId.images[0]%>" alt="IMG">
+                                            <img src="<%= products[i].productId.images[0].startsWith('http')
+                                                  ? products[i].productId.images[0]
+                                                  : '/public/uploads/' + products[i].productId.images[0] %>" alt="IMG">
                                         </div>
                                     </td>
                                     <td class="column-1"><%= products[i].productId.price %></td>

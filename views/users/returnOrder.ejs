@@ -51,7 +51,11 @@
         <div class="row">
           <form method="post" action="/returnOrder/<%=orderId%>?id=<%=product._id%>">
             <div  style="display: flex;">
-               <image src="/public/uploads/<%=product.images[0]%>" width="80em" height="80em"></image>  
+               <img src="<%= product.images[0].startsWith('http')
+                          ? product.images[0]
+                          : '/public/uploads/' + product.images[0] %>" 
+                    width="80em" height="80em">
+                </img>  
             </div>
             <div><p>order Id :<%= orderId %></p></div>
             <div><p>Item :<%= product.Name %></p></div>

@@ -39,7 +39,7 @@
                     <tr>
                     <td><%= (currentPage-1)* itemsPerPage +i+1 %></td>
                     <td><%= products[i].Name %></td>
-                    <td><img src="/public/uploads/<%= products[i].images[0] %>" width="30px"></td>
+                    <td><img src="<%= products[i].images[0] %>" width="30px"></td>
                     <td><%= products[i].price %></td>
                     <td>
                       <button type="button" class="btn btn-info"> <a href="/admin/view_product?id=<%=products[i]._id%>" style="color:black">view</a></button>

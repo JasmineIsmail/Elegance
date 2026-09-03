@@ -52,7 +52,11 @@
                           <% for(let i=0;i<order.products.length;i++){%>
                               <h5 class="card-title"><%=order.products[i].Name%></h5>
                               <div class="col-md-4">
-                                <img src="/public/uploads/<%=order.products[i].productId.images[0]%>" class="card-img-top" alt="<%=order.products[i].Name%>" width ="20em>", height="80rem">
+                                <img 
+                                  src="<%= order.products[i].productId.images[0].startsWith('http')
+                                          ? order.products[i].productId.images[0]
+                                          : '/public/uploads/' + order.products[i].productId.images[0] %>" 
+                                  class="card-img-top" alt="<%=order.products[i].Name%>" width ="20em>", height="80rem">
                               </div>
                               <div class="col-md-8">
                                 <p class="card-text">

@@ -78,4 +78,5 @@ userRoute.post("/applyCoupon",userAuth.isLogin,couponController.applyCoupon);
 userRoute.post('/removeCoupon',userAuth.isLogin,couponController.removeCoupon);
 userRoute.post('/paymentFail',userAuth.isLogin,orderController.failedPayment);
 userRoute.post('/continuePayment',userAuth.isLogin,orderController.continuePayment);
+userRoute.get("/products/:category",userController.ProductsByCategory);
 module.exports=userRoute;

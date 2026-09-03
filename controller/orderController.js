@@ -317,7 +317,6 @@ const verifyPayment = async (req,res)=>{
     try {
         const {orderId} = req.body;
         const order = await Order.findById(orderId);
-        console.log(order);
          if (!order) {
             return res.status(404).json({
                 success: false,
@@ -353,11 +352,13 @@ const viewOrders = async(req,res)=>{
         const pagination =await getPagination(Order,page,itemsPerPage,{userId});
         const user = await User.findById(userId);
         const orders = await Order.find({userId}).populate("products.productId").sort({date:-1}).skip(pagination.startIndex).limit(pagination.itemsPerPage).lean();
-        const ordersWithAddress= await Promise.all(
-            orders.map(async(order)=>{
-                return { ...order,deliveryAddress}
-            })
-        )
+        const addressData = await Address.findOne({ userId }).lean();
+        const ordersWithAddress = orders.map((order) => {
+                const deliveryAddress = addressData?.addresses?.find(
+                    address => address._id.toString() === order.userAddress.toString()
+                );
+                return {...order,deliveryAddress};
+        });
         res.render('./users/user_order',{user,orders:ordersWithAddress,totalPages:pagination.totalPages,currentPage:pagination.currentPage});
     } catch (error) {
         console.error(error);

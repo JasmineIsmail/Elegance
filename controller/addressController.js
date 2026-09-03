@@ -114,8 +114,6 @@ const saveAddress = async(req,res)=>{
         const{name,mobile,alternativeMob,houseName,place,landmark,City,State,pin} =req.body;
         const newAddress = {name,mobile,alternativeMob,houseName,place,landmark,City,State,pin};
         const addressData = await Address.findOne({userId:userId});
-        console.log(newAddress)
-        console.log(addressData);
         if(addressData){
             await Address.updateOne({userId:userId},
                 {$push:{

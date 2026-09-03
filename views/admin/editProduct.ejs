@@ -26,7 +26,7 @@
                           <a href="#" onclick="confirmDelete( '<%= productData.images[i]%>' , '<%= productData._id %>' )" class="text-danger padding-5"><i class="fa fa-trash-o"></i></a>
                           <input type="file" id="fileInput-<%= i %>" accept="image/*">
                           <button type="button" class="btn btn-success update-btn" onclick="uploadImage('<%= productData._id %>', '<%= i %>')"><i class="fa fa-pencil-square"></i>Update</button>
-                          <img id="image-<%= i %>"  src="/public/uploads/<%= productData.images[i] %>" alt="Image <%= i + 1 %>" height="100px" width="100px">
+                          <img id="image-<%= i %>"  src="<%= productData.images[i] %>" alt="Image <%= i + 1 %>" height="100px" width="100px">
                         </div>
                     <% } %>
                   </div>
@@ -122,7 +122,8 @@ function confirmDelete(image,productId){
 	})
 .then((willDelete) => {
   if (willDelete) {
-    window.location.href = "/admin/deleteImage?id="+productId +"&img="+ image;
+      const encodedImage = encodeURIComponent(image);
+      window.location.href = "/admin/deleteImage?id="+productId +"&img="+ image;
 
     swal("The image is removed.", {
       icon: "success",
@@ -137,7 +138,6 @@ return false;
 <script>
  function uploadImage(productId, imageIndex) {
     const fileInput = document.getElementById(`fileInput-${imageIndex}`);
-    console.log(fileInput);
     const file = fileInput.files[0];
     if (!file) {
         alert('Please select a file to upload.');
@@ -156,14 +156,18 @@ return false;
         processData: false,
         contentType: false,
         success: function(response) {
+           if (response.success) {
             alert('Image updated successfully.');
             const imgElement = document.getElementById(`image-${imageIndex}`);
-            imgElement.src = `/public/uploads/${response.updatedFilename}`;
-
+            imgElement.src = response.updatedFilename;
+            fileInput.value = '';
+            } else {
+                alert(response.message || 'Failed to update image.');
+            }
         },
         error: function(error) {
             console.error('Error uploading image:', error);
-            alert('Failed to upload image.');
+            alert(error.responseJSON?.message ||'Failed to upload image.');
         }
     });
 }

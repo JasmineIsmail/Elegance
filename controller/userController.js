@@ -69,7 +69,6 @@ const loadHome = async (req, res) => {
             Category.find(),
             CategoryOffer.find().populate("category")
         ]);
-        console.log(categoryOffers)
         products = await attachOfferPrices(products);
 
         res.render("./users/userHome", {

@@ -42,7 +42,10 @@
           <div class="card-group">
             <%for(let i=0;i<productData.length;i++){%>
               <div class="card">
-                <img src="/public/uploads/<%=productData[i].images[0] %>" width="100rem" height="100rem" class="card-img-top" alt="pro">
+                <img src="<%= productData[i].images[0].startsWith('http')
+                            ? productData[i].images[0]
+                            : '/public/uploads/' + productData[i].images[0] %>" 
+                      width="100rem" height="100rem" class="card-img-top" alt="pro">
                   <div class="card-body">
                     <p class="card-title"><%=productData[i].name %></p>
                     <p class="card-text"><%= productData[i].price %></p>
@@ -181,14 +184,12 @@ modalBody.addEventListener('change', function(event) {
     const couponInput = document.getElementById('coupon');
     document.getElementById('applyCoupon').addEventListener('click', function() {
     const couponValue = couponInput.value.trim(); 
-    console.log(couponValue); 
       if(couponValue == ""){
         document.getElementById('couponErr').style.display = 'block';
       }else{
         const amount= $("#totalPrice").text().trim();
         const discount = $('#discount').text().trim();
         const discountedTotal= $("#total").text().trim();
-        console.log("amount :",amount);
         $.ajax({
     url:"/applyCoupon",
     method:"post",
@@ -199,7 +200,6 @@ modalBody.addEventListener('change', function(event) {
       total:discountedTotal
     },
     success:(response)=>{
-      console.log("apply coupon response",response);
       if(response.user){
         swal({
           icon:"warning",
@@ -256,15 +256,12 @@ modalBody.addEventListener('change', function(event) {
             var total =$('#totalPrice').text().trim();
             var discount = $('#discount').text().trim();
             var reducedAmount = $('#total').text().trim();
-            console.log(discount);
-            console.log(reducedAmount);
             if(couponInput==""){
                total= $("#totalPrice").text().trim();
              // var discount = $('#discount').text().trim()
               document.getElementById('discount').innerText =discount;
               //var reducedAmount=$('#total').text().trim();
              document.getElementById('total').innerText = reducedAmount;
-              console.log("total",total);
             }
             if(!paymentMethod){
               swal({
@@ -293,7 +290,6 @@ modalBody.addEventListener('change', function(event) {
                     discount
                   },
                   success:(response)=>{
-                    console.log(response);
                     if(response.codStatus == false){
                       swal({
                           icon:"warning",
@@ -369,7 +365,6 @@ rzp1.on('payment.failed', function (response){
           method: 'post',
           data :{ orderId : order.receipt},
           success :(response) =>{
-            console.log(response);
             if (response.success) {
               swal({
                 icon: "warning",
@@ -389,7 +384,6 @@ function verifyPayment(payment,order){
                     order,
                 },
                 success:(response) => {
-                  console.log("after verify payment: ",response);
                     if (response.success) {
                       swal({
                         icon: "success",
@@ -413,7 +407,6 @@ document.getElementById("removeCoupon").addEventListener('click',function(){
       method:"post",
       data:{ couponValue: couponValue },
       success:(response)=>{
-        console.log(response);
         if(response.couponRemoved){
           document.getElementById('discount').innerText= 0;
           document.getElementById('total').innerText= actualPrice;

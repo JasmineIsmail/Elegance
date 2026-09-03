@@ -76,7 +76,6 @@ const updateCategory = async(req,res)=>{
       {$set:
         {categoryName:req.body.categoryName,
           description:req.body.description}});
-      console.log(categoryData);
        res.redirect("/admin/viewCategories");
     }catch (error) {
     console.error(error.message);

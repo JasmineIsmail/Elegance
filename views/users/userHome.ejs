@@ -160,12 +160,7 @@
 							</div>
 
 							<ul>
-								<!-------<li class="p-b-6">
-									<a href="" class="filter-link stext-106 trans-04">
-										Average rating
-									</a>
-								</li>----------->
-
+								
 								<li class="p-b-6">
 									<a href="/filter/latest" class="filter-link stext-106 trans-04 filter-link-active">
 										Newness
@@ -197,7 +192,10 @@
 				<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
 					<div class="block2">
 						<div class="block2-pic hov-img0">
-							<img src="/public/uploads/<%= product.images[0] %>" alt="IMG-PRODUCT">
+							<img src="<%= product.images[0].startsWith('http')
+            						? product.images[0]
+            						: '/public/uploads/' + product.images[0] %>" 
+								alt="IMG-PRODUCT">
 						</div>
 
 						<div class="block2-txt flex-w flex-t p-t-14">

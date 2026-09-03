@@ -128,7 +128,6 @@ const loadCoupons = async(req,res)=>{
 const deleteCoupon = async (req,res)=>{
     try{
         const couponId = req.query.id;
-        console.log(couponId);
         await Coupon.findByIdAndDelete(couponId);
         res.redirect('/admin/couponList');
     }catch(error){
@@ -231,7 +230,7 @@ const removeCoupon = async(req,res)=>{
         const couponValue = req.body.couponValue;
         const userId = req.session.user_id;
         const couponData = await Coupon.findOne({code:couponValue,user:userId});
-        console.log(couponData);
+
         const updated = await Coupon.findOneAndUpdate(
             { code: couponValue, user: userId },
             { 

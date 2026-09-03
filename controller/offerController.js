@@ -62,7 +62,6 @@ const loadCategoryOffer = async (req,res)=>{
 const loadAddCategoryOffer = async (req,res)=>{
     try {
         const category= await Category.find({},'categoryName').lean();
-        console.log(category)
         res.render('./admin/addCategoryOffer',{category});
     } catch (error) {
          console.error(error);
@@ -73,7 +72,6 @@ const loadAddCategoryOffer = async (req,res)=>{
 const addCategoryOffer = async( req,res)=>{
     try {
     const {category} = req.body;
-    console.log(req.body);
      const categoryOffer = new CategoryOffer({
             ...buildOfferData(req.body),
             category
@@ -89,7 +87,6 @@ const viewCategoryOffer=async(req,res)=>{
     try {
         const offerId = req.query.id;
         const offerDetails= await CategoryOffer.findById(offerId).populate("category","categoryName").lean();
-        console.log(offerDetails.category);
         res.render('./admin/viewCategoryOffer',{categoryOffer:offerDetails});
     } catch (error) {
         console.error(error);
@@ -99,7 +96,6 @@ const viewCategoryOffer=async(req,res)=>{
 const editCategoryOffer = async(req,res)=>{
     try {
         const offerId = req.query.id;
-        console.log("offerId",offerId);
         const [category,offerDetails] = await Promise.all([
             Category.find({},"categoryName").lean(),
             CategoryOffer.findById(offerId).lean()
@@ -174,7 +170,6 @@ const loadAddProductOffer = async (req,res)=>{
 const addProductOffer = async( req,res)=>{
     try {
     const {product} = req.body;
-    console.log(req.body);
     const productOffer = new ProductOffer({
        ...buildOfferData(req.body),product
     })        
@@ -198,7 +193,6 @@ const viewProductOffer=async(req,res)=>{
 const editProductOffer = async(req,res)=>{
     try {
         const offerId = req.query.id;
-        console.log("offerId",offerId);
         const [productlist,offerDetails]= await Promise.all([
                     Product.find({}, "Name").lean(),
                     ProductOffer.findById(offerId).lean()
@@ -237,60 +231,9 @@ const deleteProductOffer = async (req,res)=>{
         return res.status(500).render("error", { message: "Internal Server Error"});
     }
 }
-const loadRefferalOffer = async (req,res)=>{
-    try {
-        const refferalOffers = await RefferalOffer.find();
-        res.render('./admin/referalOffers',{refferalOffers});
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-const loadAddRefferalOffer = async (req,res)=>{
-    try {
-        
-        res.render('./admin/addRefferalOffer');
-    } catch (error) {
-        console.log(error.message);
-    }
-}
 
-const addRefferalOffer = async( req,res)=>{
-    try {
-    const {refferalCode,discountPercentage,startDate,expiryDate,status} = req.body;
-    console.log(req.body);
-    const referalOffer = new RefferalOffer({
-        refferalCode:refferalCode,
-        discountPercentage:discountPercentage,
-        startDate:startDate,
-        endDate:expiryDate,
-        status:status
-    })        
-    await referalOffer.save();
-    res.redirect('/admin/refferalOffers');
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-const viewRefferalOffer=async(req,res)=>{
-    try {
-        const offerId = req.query.id;
-        const offerDetails= await RefferalOffer.findById({_id:offerId});
-        res.render('./admin/viewRefferalOffer',{refferalOffer:offerDetails});
-    } catch (error) {
-        console.error(error);
-    }
-}
-const deleteRefferalOffer = async (req,res)=>{
-    try{
-        const offerId = req.query.id;
-         await deleteOffer(RefferalOffer,offerId);
-        res.redirect('/admin/refferalOffers');
-    }catch(error){
-        console.log(error.message);
-    }
-}
+
 module.exports ={
     allOffers,loadCategoryOffer,loadAddCategoryOffer,addCategoryOffer,viewCategoryOffer,editCategoryOffer,updateCategoryOffer,deleteCategoryOffer,
-    loadProductOffer,loadAddProductOffer,addProductOffer,viewProductOffer,editProductOffer,updateProductOffer,deleteProductOffer,
-    loadRefferalOffer,loadAddRefferalOffer,addRefferalOffer,viewRefferalOffer,deleteRefferalOffer
+    loadProductOffer,loadAddProductOffer,addProductOffer,viewProductOffer,editProductOffer,updateProductOffer,deleteProductOffer
 }

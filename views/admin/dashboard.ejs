@@ -275,7 +275,6 @@
     await salesFilter('month');
     });
    async function salesFilter(filterFactor){
-    console.log(filterFactor);
     let newData = {};
     const response = await fetch(`/admin/sales/${filterFactor}`);
     const result  = await response.json();
